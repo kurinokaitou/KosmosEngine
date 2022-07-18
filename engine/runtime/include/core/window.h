@@ -25,8 +25,8 @@ protected:
     std::vector<onCloseFunc> m_closeFuncs;
 
 public:
-    Window(const char* title, int width, int height, WindowMode mode);
-    virtual ~Window();
+    Window(const char* title, int width = 1280, int height = 800, WindowMode mode = WindowMode::WINDOWED);
+    virtual ~Window(){};
     virtual void setTitle(const char* titleName);
     virtual void setMode(WindowMode mode);
     virtual void setWindowSize(int width, int height);

@@ -1,5 +1,4 @@
-set(ENGINE_NAME "KosmosEngine")
-project (${ENGINE_NAME})
+set(KOSMOS_ENGINE_NAME "KosmosEngine")
 
 # Vulkan SDK设置
 if(NOT DEFINED ENV{VULKAN_SDK})
@@ -19,18 +18,18 @@ file(GLOB_RECURSE HEADER_FILES ${CMAKE_CURRENT_SOURCE_DIR} "include/*.h")
 file(GLOB_RECURSE SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR} "src/*.cpp")
 
 source_group(TREE "${CMAKE_CURRENT_SOURCE_DIR}" FILES ${HEADER_FILES} ${SOURCE_FILES})
-add_executable(${ENGINE_NAME} ${SOURCE_FILES})
+add_library(${KOSMOS_ENGINE_NAME} STATIC ${SOURCE_FILES})
 
 # 链接到库文件
-target_link_libraries(${ENGINE_NAME} PUBLIC glm::glm)
-target_link_libraries(${ENGINE_NAME} PRIVATE glfw)
-target_link_libraries(${ENGINE_NAME} PRIVATE tinyobjloader::tinyobjloader)
-target_link_libraries(${ENGINE_NAME} PRIVATE ${VK_SDK_LIB})
+target_link_libraries(${KOSMOS_ENGINE_NAME} PUBLIC glm::glm)
+target_link_libraries(${KOSMOS_ENGINE_NAME} PRIVATE glfw)
+target_link_libraries(${KOSMOS_ENGINE_NAME} PRIVATE tinyobjloader::tinyobjloader)
+target_link_libraries(${KOSMOS_ENGINE_NAME} PRIVATE ${VK_SDK_LIB})
 
 
 # 添加包含目录
-target_include_directories(${ENGINE_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
-target_include_directories(${ENGINE_NAME} PRIVATE ${VK_SDK_INCLUDE})
+target_include_directories(${KOSMOS_ENGINE_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
+target_include_directories(${KOSMOS_ENGINE_NAME} PRIVATE ${VK_SDK_INCLUDE})
 
 
 # 编译着色器
@@ -55,6 +54,6 @@ set(SHADER_INCLUDE_DIR ${SHADER_DIR}/include)
 set(SHADER_TARGET_NAME "KosmosShaderPrecompile")
 compile_shader(${SHADER_TARGET_NAME} "${SHADER_FILES}" "${SHADER_INCLUDE_DIR}")
 
-add_dependencies(${ENGINE_NAME} ${SHADER_TARGET_NAME})
+add_dependencies(${KOSMOS_ENGINE_NAME} ${SHADER_TARGET_NAME})
 
-target_include_directories(${ENGINE_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/generated/cpp)
+target_include_directories(${KOSMOS_ENGINE_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/generated/cpp)

@@ -9,7 +9,7 @@ private:
     GLFWwindow* m_window{nullptr};
 
 public:
-    GlfwWindow(const char* title, uint32_t width, uint32_t height, WindowMode mode);
+    GlfwWindow(const char* title, int width = 1280, int height = 800, WindowMode mode = WindowMode::WINDOWED);
     ~GlfwWindow();
     virtual void setTitle(const char* titleName) override;
     virtual void setMode(WindowMode mode) override;

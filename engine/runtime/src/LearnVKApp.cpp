@@ -1748,11 +1748,11 @@ static std::vector<char> readFile(const std::string& filename) {
     return buffer;
 }
 
-int main() {
-    LearnVKApp app;
-    try {
-        app.run();
-    } catch (const std::exception& e) { // Vulkan主循环中出现的异常在这里被捕获
-        std::cerr << e.what() << std::endl;
-    }
-}
+// int main() {
+//     LearnVKApp app;
+//     try {
+//         app.run();
+//     } catch (const std::exception& e) { // Vulkan主循环中出现的异常在这里被捕获
+//         std::cerr << e.what() << std::endl;
+//     }
+// }

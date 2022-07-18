@@ -1,10 +1,10 @@
-#include "RHI/glfw_window.h"
+#include "render/glfw_window.h"
 #include "core/window.h"
 #include <GLFW/glfw3.h>
 
 using namespace Kosmos::Runtime;
 
-GlfwWindow::GlfwWindow(const char* title, uint32_t width, uint32_t height, WindowMode mode) :
+GlfwWindow::GlfwWindow(const char* title, int width, int height, WindowMode mode) :
     Window(title, width, height, mode) {
     if (!glfwInit()) {
         // TODO: implement log system and log error
