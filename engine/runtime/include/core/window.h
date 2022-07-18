@@ -26,9 +26,10 @@ protected:
 
 public:
     Window(const char* title, int width, int height, WindowMode mode);
-    void setTitle(const char* titleName);
-    void setMode(WindowMode mode);
-    void setWindowSize(int width, int height);
+    virtual ~Window();
+    virtual void setTitle(const char* titleName);
+    virtual void setMode(WindowMode mode);
+    virtual void setWindowSize(int width, int height);
     std::tuple<int, int> getWindowSize() const;
     // register window events
     void registerWindowResize(onResizeFunc func);
@@ -39,6 +40,9 @@ public:
     virtual void onWindowResize(int width, int height) = 0;
     virtual void onWindowClose() = 0;
     virtual void onFrameBufferResize(int width, int height) = 0;
+
+    virtual bool shouldClose() const = 0;
+    virtual void pollEvents() const = 0;
 
 private:
     Window(const Window& window) = delete;

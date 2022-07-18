@@ -10,9 +10,16 @@ private:
 
 public:
     GlfwWindow(const char* title, uint32_t width, uint32_t height, WindowMode mode);
+    ~GlfwWindow();
+    virtual void setTitle(const char* titleName) override;
+    virtual void setMode(WindowMode mode) override;
+    virtual void setWindowSize(int width, int height) override;
     virtual void onWindowResize(int width, int height) override;
     virtual void onWindowClose() override;
     virtual void onFrameBufferResize(int width, int height) override;
+    virtual bool shouldClose() const override;
+    virtual void pollEvents() const override;
+    GLFWwindow* getWindow() const;
 
 private:
     void setupGlfwCallback();
