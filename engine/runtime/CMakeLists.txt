@@ -1,0 +1,60 @@
+set(ENGINE_NAME "KosmosEngine")
+project (${ENGINE_NAME})
+
+# Vulkan SDK设置
+if(NOT DEFINED ENV{VULKAN_SDK})
+	message(FATAL_ERROR "VULKAN_SDK not defined!")
+endif()
+set(VULKAN_SDK $ENV{VULKAN_SDK})
+set(VK_SDK_INCLUDE ${VULKAN_SDK}/Include)
+set(VK_SDK_LIB ${VULKAN_SDK}/Lib/vulkan-1.lib)
+
+# vcpkg安装的glm和glfw3引入包
+find_package(glm CONFIG REQUIRED)
+find_package(glfw3 CONFIG REQUIRED)
+find_package(tinyobjloader CONFIG REQUIRED)
+
+# 将源代码添加到此项目的可执行文件
+file(GLOB_RECURSE HEADER_FILES ${CMAKE_CURRENT_SOURCE_DIR} "include/*.h")
+file(GLOB_RECURSE SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR} "src/*.cpp")
+
+source_group(TREE "${CMAKE_CURRENT_SOURCE_DIR}" FILES ${HEADER_FILES} ${SOURCE_FILES})
+add_executable(${ENGINE_NAME} ${SOURCE_FILES})
+
+# 链接到库文件
+target_link_libraries(${ENGINE_NAME} PUBLIC glm::glm)
+target_link_libraries(${ENGINE_NAME} PRIVATE glfw)
+target_link_libraries(${ENGINE_NAME} PRIVATE tinyobjloader::tinyobjloader)
+target_link_libraries(${ENGINE_NAME} PRIVATE ${VK_SDK_LIB})
+
+
+# 添加包含目录
+target_include_directories(${ENGINE_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
+target_include_directories(${ENGINE_NAME} PRIVATE ${VK_SDK_INCLUDE})
+
+
+# 编译着色器
+set(SHADER_DIR ${CMAKE_CURRENT_SOURCE_DIR}/shaders)
+file(GLOB SHADER_FILES CONFIGURE_DEPENDS "${SHADER_DIR}/*.vert"
+                                                 "${SHADER_DIR}/*.frag"
+                                                 "${SHADER_DIR}/*.comp"
+                                                 "${SHADER_DIR}/*.geom"
+                                                 "${SHADER_DIR}/*.tesc"
+                                                 "${SHADER_DIR}/*.tese"
+                                                 "${SHADER_DIR}/*.mesh"
+                                                 "${SHADER_DIR}/*.task"
+                                                 "${SHADER_DIR}/*.rgen"
+                                                 "${SHADER_DIR}/*.rchit"
+                                                 "${SHADER_DIR}/*.rmiss"
+                                                 "${SHADER_DIR}/*.rcall")
+
+include(${CMAKE_SOURCE_DIR}/cmake/CompileShaders.cmake)
+
+source_group("shaders" FILES ${SHADER_FILES})
+set(SHADER_INCLUDE_DIR ${SHADER_DIR}/include)
+set(SHADER_TARGET_NAME "KosmosShaderPrecompile")
+compile_shader(${SHADER_TARGET_NAME} "${SHADER_FILES}" "${SHADER_INCLUDE_DIR}")
+
+add_dependencies(${ENGINE_NAME} ${SHADER_TARGET_NAME})
+
+target_include_directories(${ENGINE_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/generated/cpp)
