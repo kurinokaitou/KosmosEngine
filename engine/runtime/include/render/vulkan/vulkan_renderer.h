@@ -1,11 +1,7 @@
 #ifndef VULKAN_RENDERER_H
 #define VULKAN_RENDERER_H
-#include "vulkan/vulkan_core.h"
-#include <memory>
 #include <render/vulkan/instance.h>
 #include <render/renderer.h>
-#include <stdint.h>
-#include <vector>
 namespace Kosmos::Runtime::Vulkan {
 class VulkanRenderer : public Renderer {
 private:

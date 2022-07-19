@@ -3,6 +3,7 @@
 
 #include <memory>
 #include <stdexcept>
+#include <iostream>
 #include <vendor/spdlog/spdlog.h>
 namespace Kosmos::Runtime {
 class Logger {

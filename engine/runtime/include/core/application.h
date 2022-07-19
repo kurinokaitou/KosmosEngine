@@ -1,11 +1,10 @@
 #ifndef APPLICATION_H
 #define APPLICATION_H
 
-#include <core/window.h>
+#include "window.h"
+#include <render/renderer.h>
 #include <memory>
 #include <string>
-#include <render/renderer.h>
-
 int main(int argc, char** argv);
 namespace Kosmos::Runtime {
 struct ApplicationCreateInfo {

@@ -1,6 +1,4 @@
 #include <render/glfw_window.h>
-#include <core/window.h>
-#include <GLFW/glfw3.h>
 #include <core/log.h>
 
 using namespace Kosmos::Runtime;

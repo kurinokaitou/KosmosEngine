@@ -2,13 +2,15 @@
 #define UTILS_H
 #include <GLFW/glfw3.h>
 #include <string.h>
+#include <stdint.h>
 #include <string>
-#include <vulkan/vulkan_core.h>
 #include <assert.h>
 #include <vector>
+#include <memory.h>
 #include <algorithm>
 #include <core/log.h>
-#include <stdint.h>
+#include "make_info.h"
+
 namespace Kosmos::Runtime::Vulkan {
 class Utils {
 public:

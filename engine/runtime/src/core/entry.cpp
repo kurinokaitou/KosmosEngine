@@ -1,8 +1,6 @@
 
 #include <core/entry.h>
 #include <core/log.h>
-#include <exception>
-#include <iostream>
 int main(int argc, char** argv) {
     Kosmos::Runtime::Application* app;
     Kosmos::Runtime::Logger::init();
