@@ -11,7 +11,6 @@ int main(int argc, char** argv) {
         app->run();
     } catch (std::exception& e) {
         std::cerr << e.what() << std::endl;
-        delete app;
     }
     Kosmos::Runtime::Logger::destroy();
     delete app;

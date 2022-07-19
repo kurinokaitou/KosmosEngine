@@ -1,11 +1,14 @@
 #include <core/application.h>
 #include <render/glfw_window.h>
+#include <render/vulkan/vulkan_renderer.h>
 #include <memory>
 using namespace Kosmos::Runtime;
 
 Application* Application::s_application = nullptr;
-GlobalContext::GlobalContext(const std::string& congigFileDir, const std::string& appName) {
+GlobalContext::GlobalContext(const std::string& configFileDir, const std::string& appName) {
+    // TODO: config reader detect window type or api
     this->window = std::make_shared<GlfwWindow>(appName.c_str());
+    this->renderer = std::make_shared<Vulkan::VulkanRenderer>(this->window);
 }
 
 Application::Application(ApplicationCreateInfo& createInfo) :

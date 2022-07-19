@@ -4,6 +4,7 @@
 #include <core/window.h>
 #include <memory>
 #include <string>
+#include <render/renderer.h>
 
 int main(int argc, char** argv);
 namespace Kosmos::Runtime {
@@ -18,8 +19,8 @@ struct ApplicationCreateInfo {
 
 struct GlobalContext {
     GlobalContext(const std::string& configFileDir, const std::string& appName);
+    std::shared_ptr<Renderer> renderer;
     std::shared_ptr<Window> window;
-    // std::shared_ptr<Renderer> renderer;
 };
 
 class Application {
