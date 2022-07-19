@@ -1,6 +1,7 @@
 #ifndef KOSMOS_EDITOR_H
 #define KOSMOS_EDITOR_H
 #include <core/application.h>
+#include <filesystem>
 namespace Kosmos::Editor {
 class KosmosEditor : public Runtime::Application {
 public:
@@ -11,5 +12,4 @@ public:
     }
 };
 } // namespace Kosmos::Editor
-
 #endif // KOSMOS_EDITOR_H

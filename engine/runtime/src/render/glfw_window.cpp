@@ -1,24 +1,26 @@
 #include "render/glfw_window.h"
 #include "core/window.h"
 #include <GLFW/glfw3.h>
+#include <core/log.h>
 
 using namespace Kosmos::Runtime;
 
 GlfwWindow::GlfwWindow(const char* title, int width, int height, WindowMode mode) :
     Window(title, width, height, mode) {
     if (!glfwInit()) {
-        // TODO: implement log system and log error
         glfwTerminate();
+        KS_ENGINE_LOG_FATAL("failed to initialize glfw!");
     }
     glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
     m_window = glfwCreateWindow(m_width, m_height, m_title, nullptr, nullptr);
     if (m_window == nullptr) {
-        //  implement log system and log error
         glfwTerminate();
+        KS_ENGINE_LOG_FATAL("failed to initialize window!");
     }
     glfwSetWindowUserPointer(m_window, this);
     glfwSetInputMode(m_window, GLFW_RAW_MOUSE_MOTION, GLFW_FALSE);
     setupGlfwCallback();
+    KS_ENGINE_LOG_TRACE("Window init success!");
 }
 
 GlfwWindow::~GlfwWindow() {

@@ -44,7 +44,7 @@ private:
     static Application* s_application;
 };
 
-Application* createApplication();
+Application* createApplication(int argc, char** argv);
 } // namespace Kosmos::Runtime
 
 #endif // APPLICATION_H

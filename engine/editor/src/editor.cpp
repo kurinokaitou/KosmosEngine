@@ -1,6 +1,4 @@
-#include "core/application.h"
 #include <editor.h>
-#include <filesystem>
 Kosmos::Runtime::Application* createApplication(int argc, char** argv) {
     Kosmos::Runtime::ApplicationCreateInfo createInfo{};
     createInfo.appName = "KosmoEditor";

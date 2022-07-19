@@ -26,9 +26,19 @@ target_link_libraries(${KOSMOS_ENGINE_NAME} PRIVATE glfw)
 target_link_libraries(${KOSMOS_ENGINE_NAME} PRIVATE tinyobjloader::tinyobjloader)
 target_link_libraries(${KOSMOS_ENGINE_NAME} PRIVATE ${VK_SDK_LIB})
 
-
+# 添加预编译头
+target_compile_definitions(${KOSMOS_ENGINE_NAME} 
+    PUBLIC
+        GLFW_INCLUDE_VULKAN
+        GLM_FORCE_RADIANS
+        GLM_FORCE_DEPTH_ZERO_TO_ONE
+        STB_IMAGE_IMPLEMENTATION
+        TINYOBJLOADER_IMPLEMENTATION
+        GLM_ENABLE_EXPERIMENTAL
+)
 # 添加包含目录
-target_include_directories(${KOSMOS_ENGINE_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
+target_include_directories(${KOSMOS_ENGINE_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
+target_include_directories(${KOSMOS_ENGINE_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include/vendor)
 target_include_directories(${KOSMOS_ENGINE_NAME} PRIVATE ${VK_SDK_INCLUDE})
 
 
