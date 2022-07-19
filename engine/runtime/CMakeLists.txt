@@ -12,6 +12,8 @@ set(VK_SDK_LIB ${VULKAN_SDK}/Lib/vulkan-1.lib)
 find_package(glm CONFIG REQUIRED)
 find_package(glfw3 CONFIG REQUIRED)
 find_package(tinyobjloader CONFIG REQUIRED)
+find_package(fmt CONFIG REQUIRED)
+find_package(imgui CONFIG REQUIRED)
 
 # 将源代码添加到此项目的可执行文件
 file(GLOB_RECURSE HEADER_FILES ${CMAKE_CURRENT_SOURCE_DIR} "include/*.h")
@@ -22,10 +24,12 @@ add_library(${KOSMOS_ENGINE_NAME} STATIC ${SOURCE_FILES})
 
 # 链接到库文件
 target_link_libraries(${KOSMOS_ENGINE_NAME} PUBLIC glm::glm)
-target_link_libraries(${KOSMOS_ENGINE_NAME} PRIVATE glfw)
-target_link_libraries(${KOSMOS_ENGINE_NAME} PRIVATE tinyobjloader::tinyobjloader)
-target_link_libraries(${KOSMOS_ENGINE_NAME} PRIVATE ${VK_SDK_LIB})
+target_link_libraries(${KOSMOS_ENGINE_NAME} PUBLIC fmt::fmt)
+target_link_libraries(${KOSMOS_ENGINE_NAME} PUBLIC tinyobjloader::tinyobjloader)
+target_link_libraries(${KOSMOS_ENGINE_NAME} PUBLIC imgui::imgui)
 
+target_link_libraries(${KOSMOS_ENGINE_NAME} PRIVATE glfw)
+target_link_libraries(${KOSMOS_ENGINE_NAME} PRIVATE ${VK_SDK_LIB})
 # 添加预编译头
 target_compile_definitions(${KOSMOS_ENGINE_NAME} 
     PUBLIC
