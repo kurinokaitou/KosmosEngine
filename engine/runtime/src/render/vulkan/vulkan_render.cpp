@@ -14,4 +14,13 @@ VulkanRenderer::VulkanRenderer(std::shared_ptr<Window> window) :
 
     m_instance = std::make_unique<Instance>(engineName, appName, engineVersion, appVersion, true, false, wishLayers, wishExtentions);
     m_surface = std::make_unique<Surface>(m_instance->getVkInstance(), glfwWindow->getWindow());
+    m_device = std::make_unique<Device>(m_instance->getVkInstance(), m_surface->getSurface(), false, true);
+}
+
+VulkanRenderer::~VulkanRenderer() {
+    if (m_device == nullptr) {
+        return;
+    }
+    vkDeviceWaitIdle(m_device->getLogicalDevice());
+    KS_ENGINE_LOG_TRACE("Renderer has destroyed.");
 }

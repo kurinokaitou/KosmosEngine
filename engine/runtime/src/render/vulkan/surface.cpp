@@ -22,4 +22,5 @@ Surface& Surface::operator=(Surface&& surface) {
 
 Surface::~Surface() {
     vkDestroySurfaceKHR(m_instanceRef, m_surface, nullptr);
+    KS_ENGINE_LOG_TRACE("Window surface has destroyed.");
 }

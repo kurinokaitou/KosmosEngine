@@ -1,13 +1,49 @@
-#include "core/log.h"
 #include "vulkan/vulkan_core.h"
+#include "core/log.h"
+#include "render/vulkan/make_info.h"
 #include <render/renderer.h>
 #include <render/vulkan/device.h>
 #include <string>
-#include <utility>
+#include <vulkan/vulkan_core.h>
 using namespace Kosmos::Runtime::Vulkan;
 
-Device::Device(VkInstance instance, VkSurfaceKHR surface, bool enabledDebugMarker, bool useDifferTransQueue, uint32_t preferPhysicalDeviceIndex) {
+Device::Device(VkInstance instance, VkSurfaceKHR surface, bool enabledDebugMarker, bool useDifferTransQueue, uint32_t preferPhysicalDeviceIndex) :
+    m_enabledDebugMarker(enabledDebugMarker), m_useDiffTransQueue(useDifferTransQueue), m_surfaceRef(surface) {
     pickPhysicalDevice(instance, preferPhysicalDeviceIndex);
+    std::vector<VkDeviceQueueCreateInfo> queueCreateInfos;
+    float queuePriority = 1.0f;
+    for (auto index : m_queueFamilyIndices.familiesIndexSet) {
+        auto queueInfo = makeInfo<VkDeviceQueueCreateInfo>();
+        queueInfo.queueCount = 1;
+        queueInfo.pQueuePriorities = &queuePriority;
+        queueInfo.queueFamilyIndex = index;
+        queueCreateInfos.push_back(queueInfo);
+    }
+
+    VkPhysicalDeviceFeatures features{};
+    // TODO: implement samplerAnisotropy and sampleRateShading
+    // features.samplerAnisotropy = VK_TRUE; // 启用各项异性
+    // features.sampleRateShading = VK_TRUE; // 开启多重采样着色
+
+    auto deviceCreateInfo = makeInfo<VkDeviceCreateInfo>();
+    deviceCreateInfo.pQueueCreateInfos = queueCreateInfos.data();
+    deviceCreateInfo.queueCreateInfoCount = static_cast<uint32_t>(queueCreateInfos.size());
+    deviceCreateInfo.pEnabledFeatures = &features;
+    deviceCreateInfo.enabledExtensionCount = static_cast<uint32_t>(m_wishDeviceExtentions.size());
+    deviceCreateInfo.ppEnabledExtensionNames = m_wishDeviceExtentions.data();
+    // 此处不再开启device校验层，因为已经deprecated
+    deviceCreateInfo.enabledLayerCount = 0;
+    deviceCreateInfo.ppEnabledLayerNames = nullptr;
+
+    if (vkCreateDevice(m_physicalDevice, &deviceCreateInfo, nullptr, &m_device) == VK_SUCCESS) {
+        KS_ENGINE_LOG_TRACE("Logical device create success.");
+    } else {
+        KS_ENGINE_LOG_FATAL("Failed to create logical device");
+    }
+    // 获取到三种队列
+    vkGetDeviceQueue(m_device, static_cast<uint32_t>(m_queueFamilyIndices.graphicsFamily.value()), 0, &m_graphicQueue);
+    vkGetDeviceQueue(m_device, static_cast<uint32_t>(m_queueFamilyIndices.presentFamily.value()), 0, &m_presentQueue);
+    vkGetDeviceQueue(m_device, static_cast<uint32_t>(m_queueFamilyIndices.transferFamily.value()), 0, &m_transferQueue);
 }
 Device::Device(Device&& device) {
     m_device = std::exchange(device.m_device, nullptr);
@@ -17,6 +53,7 @@ Device::Device(Device&& device) {
 Device::~Device() {
     vmaDestroyAllocator(m_vmaAllocator);
     vkDestroyDevice(m_device, nullptr);
+    KS_ENGINE_LOG_TRACE("Logical device has destroyed.");
 }
 
 void Device::createSwapchain(const VkSwapchainCreateInfoKHR& createInfo, VkSwapchainKHR* swapchain, const std::string& name) {
@@ -84,15 +121,16 @@ void Device::pickPhysicalDevice(VkInstance instance, uint32_t preferPhysicalDevi
         VkPhysicalDeviceProperties properties;
         vkGetPhysicalDeviceProperties(m_physicalDevice, &properties);
         std::string gpuType = "unknown type";
+        std::string gpuName(properties.deviceName);
         if (properties.deviceType == VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU) {
             gpuType = "discrete";
         } else if (properties.deviceType == VK_PHYSICAL_DEVICE_TYPE_INTEGRATED_GPU) {
             gpuType = "intergrated";
         }
         if (preferredPicked) {
-            KS_ENGINE_LOG_TRACE("Preferrd {1} GPU {2} picked.", gpuType, properties.deviceName);
+            KS_ENGINE_LOG_TRACE("Preferrd {0} GPU {1} picked.", gpuType, gpuName);
         } else {
-            KS_ENGINE_LOG_TRACE("A suitable {1} GPU {2} picked.", gpuType, properties.deviceName);
+            KS_ENGINE_LOG_TRACE("A suitable {0} GPU {1} picked.", gpuType, gpuName);
         }
     }
 }
@@ -136,11 +174,31 @@ QueueFamiliyIndices Device::findDeviceQueueFamilies(VkPhysicalDevice physicalDev
         if (presentSupport) {
             indices.presentFamily = i;
         }
-        if (indices.isComplete())
+        if (indices.isGraphicPresentSameFamily()) {
             break;
+        }
     }
     indices.familiesIndexSet.insert(indices.graphicsFamily.value());
     indices.familiesIndexSet.insert(indices.presentFamily.value());
+    // 如果不指定单独的传输队列族，则使用图形队列族
+    indices.transferFamily = indices.graphicsFamily;
+    if (m_useDiffTransQueue) {
+        for (uint32_t i = 0; i < deviceQueueFamilyCount; i++) {
+            VkQueueFamilyProperties queueFamily = properties[i];
+            if (queueFamily.queueCount > 0) {
+                if (!(queueFamily.queueFlags & VK_QUEUE_GRAPHICS_BIT)) {
+                    if (queueFamily.queueFlags & VK_QUEUE_TRANSFER_BIT) {
+                        indices.transferFamily = i;
+                        indices.familiesIndexSet.insert(indices.transferFamily.value());
+                        KS_ENGINE_LOG_INFO("Use different transfer queue success.");
+                    }
+                }
+            }
+        }
+        if (indices.isGraphicTransferSameFamily()) {
+            KS_ENGINE_LOG_WARN("Failed to use different transfer queue.");
+        }
+    }
     return indices;
 }
 

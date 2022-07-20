@@ -16,7 +16,18 @@ struct QueueFamiliyIndices {
         return graphicsFamily.has_value() && presentFamily.has_value() && transferFamily.has_value();
     }
     bool isGraphicPresentSameFamily() {
-        return graphicsFamily.value() == presentFamily.value();
+        if (graphicsFamily.has_value() && presentFamily.has_value()) {
+            return graphicsFamily.value() == presentFamily.value();
+        } else {
+            return false;
+        }
+    }
+    bool isGraphicTransferSameFamily() {
+        if (graphicsFamily.has_value() && transferFamily.has_value()) {
+            return graphicsFamily.value() == transferFamily.value();
+        } else {
+            return false;
+        }
     }
     size_t familyCount() {
         return familiesIndexSet.size();
@@ -72,12 +83,11 @@ private:
     QueueFamiliyIndices m_queueFamilyIndices;
     bool m_enabledDebugMarker = false;
     std::shared_ptr<DebugMarker> m_debugMarkder;
-    bool m_useDifferTransQueue;
+    bool m_useDiffTransQueue;
 
 public:
-    Device(VkInstance instance, VkSurfaceKHR surface, bool enabledDebugMarker, bool useDifferTransQueue, uint32_t preferPhysicalDeviceIndex = -1);
+    Device(VkInstance instance, VkSurfaceKHR surface, bool enabledDebugMarker, bool useDiffTransQueue, uint32_t preferPhysicalDeviceIndex = -1);
     Device(Device&& device);
-    Device& operator=(Device&& device);
     ~Device();
 
     VkDevice getLogicalDevice() const { return m_device; }
@@ -109,6 +119,7 @@ private:
 private:
     Device(Device& device) = delete;
     Device& operator=(const Device& device) = delete;
+    Device& operator=(Device&& device) = delete;
 };
 } // namespace Kosmos::Runtime::Vulkan
 #endif // DEVICE_H

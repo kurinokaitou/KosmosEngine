@@ -12,7 +12,7 @@ public:
     Surface(Surface&& surface);
     Surface& operator=(Surface&& surface);
     ~Surface();
-    VkSurfaceKHR getSurace() { return m_surface; }
+    VkSurfaceKHR getSurface() { return m_surface; }
 
 private:
     Surface(const Surface& surface) = delete;

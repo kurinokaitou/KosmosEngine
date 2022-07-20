@@ -24,6 +24,7 @@ GlfwWindow::GlfwWindow(const char* title, int width, int height, WindowMode mode
 GlfwWindow::~GlfwWindow() {
     glfwDestroyWindow(m_window);
     glfwTerminate();
+    KS_ENGINE_LOG_TRACE("GLFW has terminated.");
 }
 
 void GlfwWindow::setTitle(const char* titleName) {

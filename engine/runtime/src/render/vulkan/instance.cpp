@@ -65,6 +65,7 @@ Instance::~Instance() {
         Utils::destroyDebugUtilsMessengerEXT(m_instance, &m_callBack, nullptr);
     }
     vkDestroyInstance(m_instance, nullptr);
+    KS_ENGINE_LOG_TRACE("Instance has destroyed.");
 }
 
 void Instance::setupDebugCallback() {
