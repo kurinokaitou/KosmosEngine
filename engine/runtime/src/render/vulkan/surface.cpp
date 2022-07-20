@@ -1,6 +1,7 @@
 #include <render/vulkan/surface.h>
 using namespace Kosmos::Runtime::Vulkan;
-Surface::Surface(VkInstance instance, GLFWwindow* window) {
+Surface::Surface(VkInstance instance, GLFWwindow* window) :
+    m_instanceRef(instance) {
     if (glfwCreateWindowSurface(instance, window, nullptr, &m_surface) == VK_SUCCESS) {
         KS_ENGINE_LOG_TRACE("Surface create success.");
     } else {

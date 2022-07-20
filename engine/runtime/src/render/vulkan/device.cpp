@@ -146,8 +146,11 @@ bool Device::isDeviceSuitable(VkPhysicalDevice physicalDevice) {
     bool extentionsSupport = Utils::checkDeviceExtentionsSupport(physicalDevice, m_wishDeviceExtentions);
     bool swapChainAdequate = false;
     if (extentionsSupport) {
-        auto [surfaceCapabilities, formats, presentModes] = queryDeviceSwapChainSupport(physicalDevice);
-        swapChainAdequate = !formats.empty() && !presentModes.empty();
+        auto tuple = queryDeviceSwapChainSupport(physicalDevice);
+        m_surfaceCapabilities = std::get<0>(tuple);
+        m_formats = std::get<1>(tuple);
+        m_presentModes = std::get<2>(tuple);
+        swapChainAdequate = !m_formats.empty() && !m_presentModes.empty();
     }
     return m_queueFamilyIndices.isComplete() && extentionsSupport && swapChainAdequate && features.samplerAnisotropy;
 }
@@ -207,25 +210,19 @@ Device::queryDeviceSwapChainSupport(VkPhysicalDevice physicalDevice) {
     VkSurfaceCapabilitiesKHR surfaceCapabilities;
     std::vector<VkSurfaceFormatKHR> formats;
     std::vector<VkPresentModeKHR> presentModes;
-    vkGetPhysicalDeviceSurfaceCapabilitiesKHR(physicalDevice, m_surfaceRef,
-                                              &surfaceCapabilities);
+    vkGetPhysicalDeviceSurfaceCapabilitiesKHR(physicalDevice, m_surfaceRef, &surfaceCapabilities);
     // 获取物理设备表面支持的格式
     uint32_t formatCount = 0;
-    vkGetPhysicalDeviceSurfaceFormatsKHR(physicalDevice, m_surfaceRef, &formatCount,
-                                         nullptr);
+    vkGetPhysicalDeviceSurfaceFormatsKHR(physicalDevice, m_surfaceRef, &formatCount, nullptr);
     if (formatCount != 0) {
         formats.resize(formatCount);
-        vkGetPhysicalDeviceSurfaceFormatsKHR(physicalDevice, m_surfaceRef,
-                                             &formatCount, formats.data());
+        vkGetPhysicalDeviceSurfaceFormatsKHR(physicalDevice, m_surfaceRef, &formatCount, formats.data());
     }
     uint32_t presentModeCount = 0;
-    vkGetPhysicalDeviceSurfacePresentModesKHR(physicalDevice, m_surfaceRef,
-                                              &presentModeCount, nullptr);
+    vkGetPhysicalDeviceSurfacePresentModesKHR(physicalDevice, m_surfaceRef, &presentModeCount, nullptr);
     if (presentModeCount != 0) {
         presentModes.resize(presentModeCount);
-        vkGetPhysicalDeviceSurfacePresentModesKHR(physicalDevice, m_surfaceRef,
-                                                  &presentModeCount,
-                                                  presentModes.data());
+        vkGetPhysicalDeviceSurfacePresentModesKHR(physicalDevice, m_surfaceRef, &presentModeCount, presentModes.data());
     }
     return {surfaceCapabilities, formats, presentModes};
 }

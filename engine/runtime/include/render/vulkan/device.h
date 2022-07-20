@@ -81,9 +81,12 @@ private:
     VkQueue m_presentQueue{VK_NULL_HANDLE};
     VkQueue m_transferQueue{VK_NULL_HANDLE};
     QueueFamiliyIndices m_queueFamilyIndices;
-    bool m_enabledDebugMarker = false;
+    bool m_enabledDebugMarker{false};
     std::shared_ptr<DebugMarker> m_debugMarkder;
-    bool m_useDiffTransQueue;
+    bool m_useDiffTransQueue{true};
+    VkSurfaceCapabilitiesKHR m_surfaceCapabilities;
+    std::vector<VkSurfaceFormatKHR> m_formats;
+    std::vector<VkPresentModeKHR> m_presentModes;
 
 public:
     Device(VkInstance instance, VkSurfaceKHR surface, bool enabledDebugMarker, bool useDiffTransQueue, uint32_t preferPhysicalDeviceIndex = -1);
@@ -93,6 +96,9 @@ public:
     VkDevice getLogicalDevice() const { return m_device; }
     VkPhysicalDevice getPhysicalDevice() const { return m_physicalDevice; }
     std::shared_ptr<DebugMarker> getDebugMarker() const { return m_debugMarkder; }
+    VkSurfaceCapabilitiesKHR getSurfaceCapabilities() const { return m_surfaceCapabilities; }
+    std::vector<VkSurfaceFormatKHR> getSurfaceFormats() const { return m_formats; }
+    std::vector<VkPresentModeKHR> getPresentMode() const { return m_presentModes; }
 
     void createSwapchain(const VkSwapchainCreateInfoKHR& createInfo, VkSwapchainKHR* swapchain, const std::string& name = "swapchain");
     void createImageView(const VkImageViewCreateInfo& createInfo, VkImageView* imageView, const std::string& name = "imageView");
