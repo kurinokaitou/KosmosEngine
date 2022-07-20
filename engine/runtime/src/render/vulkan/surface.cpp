@@ -4,7 +4,7 @@ Surface::Surface(VkInstance instance, GLFWwindow* window) {
     if (glfwCreateWindowSurface(instance, window, nullptr, &m_surface) == VK_SUCCESS) {
         KS_ENGINE_LOG_TRACE("Surface create success.");
     } else {
-        KS_ENGINE_LOG_FATAL("Failed to create surface!");
+        KS_ENGINE_LOG_FATAL("failed to create surface!");
     }
 }
 Surface::Surface(Surface&& surface) {
