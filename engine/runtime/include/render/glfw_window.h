@@ -18,7 +18,7 @@ public:
     virtual void onFrameBufferResize(int width, int height) override;
     virtual bool shouldClose() const override;
     virtual void pollEvents() const override;
-    GLFWwindow* getWindow() const;
+    GLFWwindow* getWindow() const { return m_window; };
 
 private:
     void setupGlfwCallback();

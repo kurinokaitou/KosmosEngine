@@ -73,7 +73,7 @@
         {
             "label": "run",
             "type": "shell",
-            "command": "./${workspaceFolderBasename}.exe",
+            "command": "${workspaceFolder}/build/engine/editor/KosmosEditor.exe",
             "args": [],
             "options": {
                 "cwd": "${workspaceFolder}/build"

@@ -1,7 +1,6 @@
 #include <core/application.h>
 #include <render/glfw_window.h>
 #include <render/vulkan/vulkan_renderer.h>
-#include <memory>
 using namespace Kosmos::Runtime;
 
 Application* Application::s_application = nullptr;

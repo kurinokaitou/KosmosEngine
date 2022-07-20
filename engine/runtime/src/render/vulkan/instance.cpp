@@ -19,10 +19,10 @@ Instance::Instance(const std::string& engineName, const std::string& appName,
         m_instanceExtentions.push_back(extention);
     }
     if (!Utils::checkLayersProperties(m_instanceLayers)) {
-        KS_ENGINE_LOG_FATAL("failed to create layers!");
+        KS_ENGINE_LOG_FATAL("Failed to create layers!");
     }
     if (!Utils::checkInstanceExtentionsSupport(m_instanceExtentions)) {
-        KS_ENGINE_LOG_FATAL("failed to support extensions!");
+        KS_ENGINE_LOG_FATAL("Failed to support extensions!");
     }
     auto appInfo = makeInfo<VkApplicationInfo>();
     appInfo.applicationVersion = appVersion;
@@ -41,7 +41,7 @@ Instance::Instance(const std::string& engineName, const std::string& appName,
     if (vkCreateInstance(&createInfo, nullptr, &m_instance) == VK_SUCCESS) {
         KS_ENGINE_LOG_TRACE("Instance create success.");
     } else {
-        KS_ENGINE_LOG_FATAL("failed to create instance!");
+        KS_ENGINE_LOG_FATAL("Failed to create instance!");
     }
     setupDebugCallback();
 }
@@ -75,8 +75,8 @@ void Instance::setupDebugCallback() {
     VkResult res = Utils::createDebugUtilsMessengerEXT(m_instance, &createInfo,
                                                        nullptr, &m_callBack);
     if (res == VK_SUCCESS) {
-        KS_ENGINE_LOG_TRACE("setup debug callback success.");
+        KS_ENGINE_LOG_TRACE("Setup debug callback success.");
     } else {
-        KS_ENGINE_LOG_FATAL("failed to setup debug callback!");
+        KS_ENGINE_LOG_FATAL("Failed to setup debug callback!");
     }
 }
