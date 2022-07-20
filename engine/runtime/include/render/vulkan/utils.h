@@ -26,6 +26,7 @@ public:
         VkInstance instance, const VkDebugUtilsMessengerCreateInfoEXT* pCreateInfo,
         const VkAllocationCallbacks* pAllocator, VkDebugUtilsMessengerEXT* pCallback);
     static void destroyDebugUtilsMessengerEXT(VkInstance instance, VkDebugUtilsMessengerEXT* pCallback, const VkAllocationCallbacks* pAllocator);
+    static VkSampleCountFlagBits getMaxUsableSampleCount(VkPhysicalDevice physicalDevice);
 };
 } // namespace Kosmos::Runtime::Vulkan
 

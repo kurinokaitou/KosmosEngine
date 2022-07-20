@@ -13,6 +13,8 @@ private:
 public:
     Renderer(std::shared_ptr<Window> window);
     virtual ~Renderer() {}
+
+    static VkSampleCountFlagBits s_msaaSampleCount;
 };
 } // namespace Kosmos::Runtime
 #endif // RENDERER_H

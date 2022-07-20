@@ -15,7 +15,9 @@ private:
 public:
     Instance(const std::string& engineName, const std::string& appName,
              uint32_t engineVersion, uint32_t appVersion, bool enableValidationLayer, bool enableRenderDoc,
-             std::vector<const char*>& wishLayers, std::vector<const char*>& wishExtentions);
+             std::vector<const char*> wishLayers, std::vector<const char*> wishExtentions);
+    Instance(const std::string& engineName, const std::string& appName,
+             uint32_t engineVersion, uint32_t appVersion);
     Instance(Instance&& instance);
     Instance& operator=(Instance&& instance);
     ~Instance();

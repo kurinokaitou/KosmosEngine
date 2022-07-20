@@ -3,7 +3,7 @@ using namespace Kosmos::Runtime::Vulkan;
 
 Instance::Instance(const std::string& engineName, const std::string& appName,
                    uint32_t engineVersion, uint32_t appVersion, bool enableValidationLayer, bool enableRenderDoc,
-                   std::vector<const char*>& wishLayers, std::vector<const char*>& wishExtentions) :
+                   std::vector<const char*> wishLayers, std::vector<const char*> wishExtentions) :
     m_enabledValidationLayer(enableValidationLayer),
     m_instanceLayers(wishLayers.begin(), wishLayers.end()),
     m_instanceExtentions(wishExtentions.begin(), wishExtentions.end()) {
@@ -45,6 +45,9 @@ Instance::Instance(const std::string& engineName, const std::string& appName,
     }
     setupDebugCallback();
 }
+Instance::Instance(const std::string& engineName, const std::string& appName,
+                   uint32_t engineVersion, uint32_t appVersion) :
+    Instance(engineName, appName, engineVersion, appVersion, true, true, {}, {}) {}
 
 Instance::Instance(Instance&& instance) {
     m_instance = std::exchange(instance.m_instance, VK_NULL_HANDLE);
