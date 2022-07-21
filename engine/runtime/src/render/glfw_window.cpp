@@ -65,8 +65,35 @@ inline bool GlfwWindow::shouldClose() const {
 inline void GlfwWindow::pollEvents() const {
     glfwPollEvents();
 }
+
+inline void* GlfwWindow::getWindowPtr() const {
+    return m_window;
+}
+
 void GlfwWindow::setupGlfwCallback() {
     glfwSetWindowSizeCallback(m_window, windowResizeCallback);
     glfwSetFramebufferSizeCallback(m_window, frameBufferResizeCallback);
     glfwSetWindowCloseCallback(m_window, windowCloseCallback);
+}
+
+void GlfwWindow::windowResizeCallback(GLFWwindow* window, int width, int height) {
+    GlfwWindow* appWindow = static_cast<GlfwWindow*>(glfwGetWindowUserPointer(window));
+    if (appWindow) {
+        appWindow->setWindowSize(width, height);
+        appWindow->onWindowResize(width, height);
+    }
+}
+
+void GlfwWindow::windowCloseCallback(GLFWwindow* window) {
+    GlfwWindow* appWindow = static_cast<GlfwWindow*>(glfwGetWindowUserPointer(window));
+    if (appWindow) {
+        appWindow->onWindowClose();
+        glfwSetWindowShouldClose(window, true);
+    }
+}
+void GlfwWindow::frameBufferResizeCallback(GLFWwindow* window, int width, int height) {
+    GlfwWindow* appWindow = static_cast<GlfwWindow*>(glfwGetWindowUserPointer(window));
+    if (appWindow) {
+        appWindow->onFrameBufferResize(width, height);
+    }
 }

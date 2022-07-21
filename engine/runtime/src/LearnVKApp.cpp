@@ -257,7 +257,7 @@ void LearnVKApp::createSwapChain() {
     createInfo.imageExtent = extent;
     createInfo.imageFormat = surfaceFormat.format;
     createInfo.imageColorSpace = surfaceFormat.colorSpace;
-    createInfo.oldSwapchain = m_swapChain; // 允许重建交换链在渲染时进行
+    createInfo.oldSwapchain = m_swapchain; // 允许重建交换链在渲染时进行
 
     QueueFamiliyIndices queueFamilyIndices =
         findDeviceQueueFamilies(m_physicalDevice);
@@ -284,25 +284,25 @@ void LearnVKApp::createSwapChain() {
     createInfo.oldSwapchain = VK_NULL_HANDLE; // 重建交换链时用于指定之前的交换链
 
     VkResult res =
-        vkCreateSwapchainKHR(m_device, &createInfo, nullptr, &m_swapChain);
+        vkCreateSwapchainKHR(m_device, &createInfo, nullptr, &m_swapchain);
     if (res != VK_SUCCESS) {
         throw std::runtime_error("failed to create swap chain!");
     }
     uint32_t imgCount = 0;
     // 获取交换链图像的句柄
-    vkGetSwapchainImagesKHR(m_device, m_swapChain, &imgCount, nullptr);
-    m_swapChainImages.resize(imgCount);
-    vkGetSwapchainImagesKHR(m_device, m_swapChain, &imgCount,
-                            m_swapChainImages.data());
-    m_swapChainImageFormat = surfaceFormat.format;
-    m_swapChainImageExtent = extent;
+    vkGetSwapchainImagesKHR(m_device, m_swapchain, &imgCount, nullptr);
+    m_swapchainImages.resize(imgCount);
+    vkGetSwapchainImagesKHR(m_device, m_swapchain, &imgCount,
+                            m_swapchainImages.data());
+    m_swapchainImageFormat = surfaceFormat.format;
+    m_swapchainImageExtent = extent;
 }
 
 void LearnVKApp::createImageViews() {
-    m_swapChainImageViews.resize(m_swapChainImages.size());
-    for (int i = 0; i < m_swapChainImages.size(); i++) {
-        m_swapChainImageViews[i] =
-            createImageView(m_swapChainImages[i], m_swapChainImageFormat,
+    m_swapchainImageViews.resize(m_swapchainImages.size());
+    for (int i = 0; i < m_swapchainImages.size(); i++) {
+        m_swapchainImageViews[i] =
+            createImageView(m_swapchainImages[i], m_swapchainImageFormat,
                             VK_IMAGE_ASPECT_COLOR_BIT, 1);
     }
 }
@@ -337,7 +337,7 @@ VkImageView LearnVKApp::createImageView(VkImage image, VkFormat format,
 void LearnVKApp::createRenderPass() {
     // 帧缓冲附着
     VkAttachmentDescription colorAttachment = {};
-    colorAttachment.format = m_swapChainImageFormat;
+    colorAttachment.format = m_swapchainImageFormat;
     colorAttachment.samples = m_msaaSampleCount;
     // 颜色和深度缓冲的存取策略
     colorAttachment.loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
@@ -351,7 +351,7 @@ void LearnVKApp::createRenderPass() {
 
     // 帧缓冲附着解析多重采样
     VkAttachmentDescription colorAttachmentResolve = {};
-    colorAttachmentResolve.format = m_swapChainImageFormat;
+    colorAttachmentResolve.format = m_swapchainImageFormat;
     colorAttachmentResolve.samples = VK_SAMPLE_COUNT_1_BIT;
     colorAttachmentResolve.loadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
     colorAttachmentResolve.storeOp = VK_ATTACHMENT_STORE_OP_STORE;
@@ -496,14 +496,14 @@ void LearnVKApp::createGraphicsPipeline() {
     VkViewport viewport = {};
     viewport.x = 0.0f;
     viewport.y = 0.0f;
-    viewport.width = (float)m_swapChainImageExtent.width;
-    viewport.height = (float)m_swapChainImageExtent.height;
+    viewport.width = (float)m_swapchainImageExtent.width;
+    viewport.height = (float)m_swapchainImageExtent.height;
     viewport.maxDepth = 1.0f;
     viewport.minDepth = 0.0f;
 
     VkRect2D scissor = {};
     scissor.offset = {0, 0};
-    scissor.extent = m_swapChainImageExtent;
+    scissor.extent = m_swapchainImageExtent;
 
     VkPipelineViewportStateCreateInfo viewportCreateInfo = {};
     viewportCreateInfo.sType =
@@ -630,19 +630,19 @@ void LearnVKApp::createGraphicsPipeline() {
 }
 
 void LearnVKApp::createFrameBuffers() {
-    m_swapChainFrameBuffers.resize(m_swapChainImageViews.size());
-    for (int i = 0; i < m_swapChainImages.size(); i++) {
-        VkImageView imageViews[] = {m_colorImageView, m_depthImageView, m_swapChainImageViews[i]}; // 写进自己创建的framebuffer对象中，然后由swapchain的对象来resolve呈现
+    m_swapchainFrameBuffers.resize(m_swapchainImageViews.size());
+    for (int i = 0; i < m_swapchainImages.size(); i++) {
+        VkImageView imageViews[] = {m_colorImageView, m_depthImageView, m_swapchainImageViews[i]}; // 写进自己创建的framebuffer对象中，然后由swapchain的对象来resolve呈现
         VkFramebufferCreateInfo createInfo = {};
         createInfo.sType = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;
         createInfo.renderPass = m_renderPass;
         createInfo.attachmentCount = 3;
         createInfo.pAttachments = imageViews;
-        createInfo.width = m_swapChainImageExtent.width;
-        createInfo.height = m_swapChainImageExtent.height;
+        createInfo.width = m_swapchainImageExtent.width;
+        createInfo.height = m_swapchainImageExtent.height;
         createInfo.layers = 1;
         VkResult res = vkCreateFramebuffer(m_device, &createInfo, nullptr,
-                                           &m_swapChainFrameBuffers[i]);
+                                           &m_swapchainFrameBuffers[i]);
         if (res != VK_SUCCESS) {
             throw std::runtime_error("failed to create frame buffer");
         }
@@ -665,7 +665,7 @@ void LearnVKApp::createCommandPool() {
 void LearnVKApp::createDepthResources() {
     VkFormat depthFormat = findDepthFormat();
     createImage(
-        m_swapChainImageExtent.width, m_swapChainImageExtent.height, 1,
+        m_swapchainImageExtent.width, m_swapchainImageExtent.height, 1,
         m_msaaSampleCount, depthFormat, VK_IMAGE_TILING_OPTIMAL,
         VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT,
         VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT, m_depthImage, m_depthImageMemory);
@@ -674,8 +674,8 @@ void LearnVKApp::createDepthResources() {
 }
 
 void LearnVKApp::createColorResources() {
-    VkFormat colorFormat = m_swapChainImageFormat;
-    createImage(m_swapChainImageExtent.width, m_swapChainImageExtent.height, 1,
+    VkFormat colorFormat = m_swapchainImageFormat;
+    createImage(m_swapchainImageExtent.width, m_swapchainImageExtent.height, 1,
                 m_msaaSampleCount, colorFormat, VK_IMAGE_TILING_OPTIMAL,
                 VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT | VK_IMAGE_USAGE_TRANSIENT_ATTACHMENT_BIT,
                 VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT, m_colorImage, m_colorImageMemory);
@@ -1080,7 +1080,7 @@ void LearnVKApp::endSingleTimeCommand(VkCommandBuffer& commandBuffer) {
 void LearnVKApp::createUniformBuffers() {
     VkDeviceSize bufferSize = sizeof(UniformBufferObject);
     // 每一个swapchain image一个ubo buffer
-    size_t imagesNum = m_swapChainImages.size();
+    size_t imagesNum = m_swapchainImages.size();
     m_uboBuffers.resize(imagesNum);
     m_uboBufferMemories.resize(imagesNum);
     for (int i = 0; i < imagesNum; i++) {
@@ -1092,7 +1092,7 @@ void LearnVKApp::createUniformBuffers() {
 
 void LearnVKApp::createDescriptorPool() {
     VkDescriptorPoolSize uniformPoolSize = {};
-    uint32_t imageCount = static_cast<uint32_t>(m_swapChainImages.size());
+    uint32_t imageCount = static_cast<uint32_t>(m_swapchainImages.size());
     uniformPoolSize.descriptorCount = imageCount;
     uniformPoolSize.type = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
 
@@ -1116,7 +1116,7 @@ void LearnVKApp::createDescriptorPool() {
 }
 
 void LearnVKApp::createDescriptorSets() {
-    size_t imageCount = m_swapChainImages.size();
+    size_t imageCount = m_swapchainImages.size();
     std::vector<VkDescriptorSetLayout> layouts(imageCount, m_descriptorSetLayout);
     VkDescriptorSetAllocateInfo allocInfo = {};
     allocInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
@@ -1219,8 +1219,8 @@ void LearnVKApp::recordCommandBuffers(VkCommandBuffer commandBuffer,
     VkRenderPassBeginInfo renderPassBeginInfo = {};
     renderPassBeginInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
     renderPassBeginInfo.renderPass = m_renderPass;
-    renderPassBeginInfo.framebuffer = m_swapChainFrameBuffers[imageIndex];
-    renderPassBeginInfo.renderArea.extent = m_swapChainImageExtent;
+    renderPassBeginInfo.framebuffer = m_swapchainFrameBuffers[imageIndex];
+    renderPassBeginInfo.renderArea.extent = m_swapchainImageExtent;
     renderPassBeginInfo.renderArea.offset = {0, 0};
     std::array<VkClearValue, 2> clearValues;
     clearValues[0].color = {0.01f, 0.01f, 0.01f, 1.0f};
@@ -1235,15 +1235,15 @@ void LearnVKApp::recordCommandBuffers(VkCommandBuffer commandBuffer,
     VkViewport viewport{};
     viewport.x = 0.0f;
     viewport.y = 0.0f;
-    viewport.width = (float)m_swapChainImageExtent.width;
-    viewport.height = (float)m_swapChainImageExtent.height;
+    viewport.width = (float)m_swapchainImageExtent.width;
+    viewport.height = (float)m_swapchainImageExtent.height;
     viewport.minDepth = 0.0f;
     viewport.maxDepth = 1.0f;
     vkCmdSetViewport(commandBuffer, 0, 1, &viewport);
 
     VkRect2D scissor{};
     scissor.offset = {0, 0};
-    scissor.extent = m_swapChainImageExtent;
+    scissor.extent = m_swapchainImageExtent;
     vkCmdSetScissor(commandBuffer, 0, 1, &scissor);
 
     VkBuffer pBuffer[] = {m_vertexBuffer};
@@ -1348,12 +1348,12 @@ bool LearnVKApp::isDeviceSuitable(VkPhysicalDevice physicalDevice) {
     QueueFamiliyIndices indices = findDeviceQueueFamilies(physicalDevice);
     // 查询设备是否支持要求的扩展
     bool extentionsSupport = checkDeviceExtentionsSupport(physicalDevice);
-    bool swapChainAdequate = false;
+    bool swapchainAdequate = false;
     if (extentionsSupport) {
-        auto swapChainDetails = queryDeviceSwapChainSupport(physicalDevice);
-        swapChainAdequate = !swapChainDetails.formats.empty() && !swapChainDetails.presentModes.empty();
+        auto swapchainDetails = queryDeviceSwapChainSupport(physicalDevice);
+        swapchainAdequate = !swapchainDetails.formats.empty() && !swapchainDetails.presentModes.empty();
     }
-    return indices.isComplete() && extentionsSupport && swapChainAdequate && features.samplerAnisotropy;
+    return indices.isComplete() && extentionsSupport && swapchainAdequate && features.samplerAnisotropy;
 }
 
 void LearnVKApp::createLogicalDevice() {
@@ -1460,7 +1460,7 @@ void LearnVKApp::updateUniformBuffers(uint32_t imageIndex) {
     ubo.view = glm::lookAt(glm::vec3(2.0f, 2.0f, 2.0f), glm::vec3(0),
                            glm::vec3(0.0f, 0.0f, 1.0f)); // 从(2,2,2)看向(0,0,0)
     ubo.proj = glm::perspective(glm::radians(45.0f),
-                                m_swapChainImageExtent.width / static_cast<float>(m_swapChainImageExtent.height),
+                                m_swapchainImageExtent.width / static_cast<float>(m_swapchainImageExtent.height),
                                 0.1f, 10.0f); // 投影矩阵，fov:45 平截头体近0.1远10
     ubo.proj[1][1] *= -1;                     // 因为OpenGL与Vulkan的y轴正方向是反的，因此需要将y轴缩放系数取相反数
 
@@ -1481,7 +1481,7 @@ void LearnVKApp::drawFrame() {
     VkSemaphore waitSemaphores[] = {m_imageAvailableSemaphore[m_currentFrameIndex]}; // 为等待从交换链获取图片的信号量
     VkSemaphore signalSemaphores[] = {m_renderFinishSemaphore[m_currentFrameIndex]};
     VkResult res = vkAcquireNextImageKHR(
-        m_device, m_swapChain, MAX_TIMEOUT, waitSemaphores[0], VK_NULL_HANDLE,
+        m_device, m_swapchain, MAX_TIMEOUT, waitSemaphores[0], VK_NULL_HANDLE,
         &imageIndex); //开始获取的同时 P(wait);当获取之后就会S(wait);
     if (res == VK_ERROR_OUT_OF_DATE_KHR) {
         recreateSwapChain();
@@ -1489,7 +1489,7 @@ void LearnVKApp::drawFrame() {
     } else if (res != VK_SUCCESS && res != VK_SUBOPTIMAL_KHR) {
         throw std::runtime_error("failed to acquire swap chain!");
     }
-    vkResetFences(m_device, 1, &m_fences[m_currentFrameIndex]); // 后延fence的重置表示如果重建了swapChain已然可以进入这一帧
+    vkResetFences(m_device, 1, &m_fences[m_currentFrameIndex]); // 后延fence的重置表示如果重建了swapchain已然可以进入这一帧
     updateUniformBuffers(imageIndex);
     vkResetCommandBuffer(m_commandBuffers[m_currentFrameIndex], 0);
     recordCommandBuffers(m_commandBuffers[m_currentFrameIndex], imageIndex);
@@ -1518,9 +1518,9 @@ void LearnVKApp::drawFrame() {
     presentInfo.waitSemaphoreCount = 1;
     presentInfo.pWaitSemaphores =
         signalSemaphores; // P(signal); 申请将渲染的内容呈现
-    VkSwapchainKHR swapChains[] = {m_swapChain};
+    VkSwapchainKHR swapchains[] = {m_swapchain};
     presentInfo.swapchainCount = 1;
-    presentInfo.pSwapchains = swapChains;
+    presentInfo.pSwapchains = swapchains;
     presentInfo.pImageIndices = &imageIndex;
     queue = m_queueMap["presentFamily"];
     res = vkQueuePresentKHR(queue, &presentInfo);
@@ -1542,7 +1542,7 @@ void LearnVKApp::cleanupSwapChain() {
     vkDestroyImage(m_device, m_colorImage, nullptr);
     vkFreeMemory(m_device, m_colorImageMemory, nullptr);
 
-    for (auto& frameBuffer : m_swapChainFrameBuffers) {
+    for (auto& frameBuffer : m_swapchainFrameBuffers) {
         vkDestroyFramebuffer(m_device, frameBuffer, nullptr);
     }
     vkFreeCommandBuffers(m_device, m_commandPool,
@@ -1551,10 +1551,10 @@ void LearnVKApp::cleanupSwapChain() {
     vkDestroyPipeline(m_device, m_graphicsPipeline, nullptr);
     vkDestroyPipelineLayout(m_device, m_pipelineLayout, nullptr);
     vkDestroyRenderPass(m_device, m_renderPass, nullptr);
-    for (auto& imageView : m_swapChainImageViews) {
+    for (auto& imageView : m_swapchainImageViews) {
         vkDestroyImageView(m_device, imageView, nullptr);
     }
-    vkDestroySwapchainKHR(m_device, m_swapChain, nullptr);
+    vkDestroySwapchainKHR(m_device, m_swapchain, nullptr);
 }
 
 void LearnVKApp::recreateSwapChain() {
@@ -1579,7 +1579,7 @@ void LearnVKApp::recreateSwapChain() {
 }
 
 void LearnVKApp::clearBuffers() {
-    for (int i = 0; i < m_swapChainImages.size(); i++) {
+    for (int i = 0; i < m_swapchainImages.size(); i++) {
         vkDestroyBuffer(m_device, m_uboBuffers[i], nullptr);
         vkFreeMemory(m_device, m_uboBufferMemories[i], nullptr);
     }

@@ -53,7 +53,7 @@ public:
     }
 
     // TODO: implement debug marker
-    void setDebugObjectName(void* obj, VkDebugReportObjectTypeEXT type, const std::string&& name){};
+    void setDebugObjectName(void* obj, VkDebugReportObjectTypeEXT type, const std::string& name){};
     void setDebugObjectMemoryTag(void* obj, VkDebugReportObjectTypeEXT type, uint64_t name, size_t mem_size, const void* mem_block){};
     void beginDebugRegion(VkCommandBuffer commandBuffer, const std::string& name, std::array<float, 4> color){};
     void insertDebugMarker(VkCommandBuffer commandBuffer, const std::string& name, std::array<float, 4> color){};
@@ -97,11 +97,12 @@ public:
     VkPhysicalDevice getPhysicalDevice() const { return m_physicalDevice; }
     std::shared_ptr<DebugMarker> getDebugMarker() const { return m_debugMarkder; }
     VkSurfaceCapabilitiesKHR getSurfaceCapabilities() const { return m_surfaceCapabilities; }
-    std::vector<VkSurfaceFormatKHR> getSurfaceFormats() const { return m_formats; }
-    std::vector<VkPresentModeKHR> getPresentMode() const { return m_presentModes; }
+    std::vector<VkSurfaceFormatKHR> getAvailableSurfaceFormats() const { return m_formats; }
+    std::vector<VkPresentModeKHR> getAvailablePresentMode() const { return m_presentModes; }
+    QueueFamiliyIndices getQueueFamiliyIndices() const { return m_queueFamilyIndices; }
 
     void createSwapchain(const VkSwapchainCreateInfoKHR& createInfo, VkSwapchainKHR* swapchain, const std::string& name = "swapchain");
-    void createImageView(const VkImageViewCreateInfo& createInfo, VkImageView* imageView, const std::string& name = "imageView");
+    void createImageView(VkImage image, VkFormat format, VkImageAspectFlags aspectMask, uint32_t mipLevels, VkImageView* imageView, const std::string& name);
     void createRenderPass(const VkRenderPassCreateInfo& createInfo, VkRenderPass* renderPass, const std::string& name = "renderPass");
     void createGraphicsPipelineLayout(const VkPipelineLayoutCreateInfo& createInfo, VkPipelineLayout* layout, const std::string& = "pipelineLayout");
     void createGraphicsPipeline(const VkGraphicsPipelineCreateInfo& createInfo, VkPipeline* pipeline, const std::string& name = "pipeline");

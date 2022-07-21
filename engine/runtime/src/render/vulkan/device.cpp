@@ -1,9 +1,5 @@
-#include "vulkan/vulkan_core.h"
-#include "core/log.h"
-#include "render/vulkan/make_info.h"
 #include <render/renderer.h>
 #include <render/vulkan/device.h>
-#include <string>
 #include <vulkan/vulkan_core.h>
 using namespace Kosmos::Runtime::Vulkan;
 
@@ -57,8 +53,36 @@ Device::~Device() {
 }
 
 void Device::createSwapchain(const VkSwapchainCreateInfoKHR& createInfo, VkSwapchainKHR* swapchain, const std::string& name) {
+    if (vkCreateSwapchainKHR(m_device, &createInfo, nullptr, swapchain) == VK_SUCCESS) {
+        KS_ENGINE_LOG_TRACE("Swapchain create success.");
+    } else {
+        KS_ENGINE_LOG_FATAL("Failed to create swapchain!");
+    }
+    m_debugMarkder->setDebugObjectName(&swapchain, VK_DEBUG_REPORT_OBJECT_TYPE_SWAPCHAIN_KHR_EXT, name);
 }
-void Device::createImageView(const VkImageViewCreateInfo& createInfo, VkImageView* imageView, const std::string& name) {
+void Device::createImageView(VkImage image, VkFormat format, VkImageAspectFlags aspectMask, uint32_t mipLevels, VkImageView* imageView, const std::string& name) {
+    auto createInfo = makeInfo<VkImageViewCreateInfo>();
+    createInfo.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
+    createInfo.image = image;
+    createInfo.format = format;
+    createInfo.viewType = VK_IMAGE_VIEW_TYPE_2D;
+    // 指定颜色的映射方式
+    createInfo.components.a = VK_COMPONENT_SWIZZLE_IDENTITY;
+    createInfo.components.b = VK_COMPONENT_SWIZZLE_IDENTITY;
+    createInfo.components.g = VK_COMPONENT_SWIZZLE_IDENTITY;
+    createInfo.components.r = VK_COMPONENT_SWIZZLE_IDENTITY;
+    // 指定哪部分图片资源可以被访问,这里被设置为渲染目标
+    createInfo.subresourceRange.aspectMask = aspectMask;
+    createInfo.subresourceRange.baseMipLevel = 0;
+    createInfo.subresourceRange.levelCount = mipLevels;
+    createInfo.subresourceRange.baseArrayLayer = 0;
+    createInfo.subresourceRange.layerCount = 1;
+    if (vkCreateImageView(m_device, &createInfo, nullptr, imageView) == VK_SUCCESS) {
+        KS_ENGINE_LOG_TRACE("ImageView create success.");
+    } else {
+        KS_ENGINE_LOG_FATAL("Failed to create ImageView!");
+    }
+    m_debugMarkder->setDebugObjectName(&imageView, VK_DEBUG_REPORT_OBJECT_TYPE_IMAGE_VIEW_EXT, name);
 }
 void Device::createRenderPass(const VkRenderPassCreateInfo& createInfo, VkRenderPass* renderPass, const std::string& name) {
 }
@@ -144,15 +168,15 @@ bool Device::isDeviceSuitable(VkPhysicalDevice physicalDevice) {
     m_queueFamilyIndices = findDeviceQueueFamilies(physicalDevice);
     // 查询设备是否支持要求的扩展
     bool extentionsSupport = Utils::checkDeviceExtentionsSupport(physicalDevice, m_wishDeviceExtentions);
-    bool swapChainAdequate = false;
+    bool swapchainAdequate = false;
     if (extentionsSupport) {
         auto tuple = queryDeviceSwapChainSupport(physicalDevice);
         m_surfaceCapabilities = std::get<0>(tuple);
         m_formats = std::get<1>(tuple);
         m_presentModes = std::get<2>(tuple);
-        swapChainAdequate = !m_formats.empty() && !m_presentModes.empty();
+        swapchainAdequate = !m_formats.empty() && !m_presentModes.empty();
     }
-    return m_queueFamilyIndices.isComplete() && extentionsSupport && swapChainAdequate && features.samplerAnisotropy;
+    return m_queueFamilyIndices.isComplete() && extentionsSupport && swapchainAdequate && features.samplerAnisotropy;
 }
 
 QueueFamiliyIndices Device::findDeviceQueueFamilies(VkPhysicalDevice physicalDevice) {
@@ -177,12 +201,16 @@ QueueFamiliyIndices Device::findDeviceQueueFamilies(VkPhysicalDevice physicalDev
         if (presentSupport) {
             indices.presentFamily = i;
         }
-        if (indices.isGraphicPresentSameFamily()) {
-            break;
-        }
+        // if (indices.isGraphicPresentSameFamily()) {
+        //     break;
+        // }
     }
-    indices.familiesIndexSet.insert(indices.graphicsFamily.value());
-    indices.familiesIndexSet.insert(indices.presentFamily.value());
+    if (indices.graphicsFamily.has_value() && indices.presentFamily.has_value()) {
+        indices.familiesIndexSet.insert(indices.graphicsFamily.value());
+        indices.familiesIndexSet.insert(indices.presentFamily.value());
+    } else {
+        KS_LOG_FATAL("Failed to find graphic and present family!");
+    }
     // 如果不指定单独的传输队列族，则使用图形队列族
     indices.transferFamily = indices.graphicsFamily;
     if (m_useDiffTransQueue) {

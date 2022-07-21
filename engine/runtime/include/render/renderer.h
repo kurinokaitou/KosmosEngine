@@ -6,7 +6,7 @@
 namespace Kosmos::Runtime {
 
 class Renderer {
-private:
+protected:
     std::shared_ptr<Window> m_window;
     std::unique_ptr<RenderGraph> m_renderGraph;
 

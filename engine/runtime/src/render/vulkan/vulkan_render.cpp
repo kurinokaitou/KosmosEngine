@@ -10,13 +10,12 @@ VulkanRenderer::VulkanRenderer(std::shared_ptr<Window> window) :
     uint32_t appVersion = VK_MAKE_VERSION(0, 0, 1);
     std::vector<const char*> wishLayers{};
     std::vector<const char*> wishExtentions{};
-    auto glfwWindow = std::dynamic_pointer_cast<GlfwWindow>(window);
 
     m_instance = std::make_unique<Instance>(engineName, appName, engineVersion, appVersion, true, false, wishLayers, wishExtentions);
-    m_surface = std::make_unique<Surface>(m_instance->getVkInstance(), glfwWindow->getWindow());
+    m_surface = std::make_unique<Surface>(m_instance->getVkInstance(), reinterpret_cast<GLFWwindow*>(m_window->getWindowPtr()));
     m_device = std::make_unique<Device>(m_instance->getVkInstance(), m_surface->getSurface(), false, true);
-    // m_swapchain = std::make_unique<Swapchain>(*m_device);
-    // TODO: finish swapchain
+    auto [width, height] = m_window->getWindowSize();
+    m_swapchain = std::make_unique<Swapchain>(*m_device, m_surface->getSurface(), width, height, "defaultSwapchain");
 }
 
 VulkanRenderer::~VulkanRenderer() {

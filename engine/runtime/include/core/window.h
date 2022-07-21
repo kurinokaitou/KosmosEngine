@@ -27,14 +27,24 @@ protected:
 public:
     Window(const char* title, int width = 1280, int height = 800, WindowMode mode = WindowMode::WINDOWED);
     virtual ~Window(){};
-    virtual void setTitle(const char* titleName);
-    virtual void setMode(WindowMode mode);
-    virtual void setWindowSize(int width, int height);
-    std::tuple<int, int> getWindowSize() const;
+    virtual void setTitle(const char* titleName) { m_title = titleName; }
+    virtual void setMode(WindowMode mode) { m_mode = mode; }
+    virtual void setWindowSize(int width, int height) {
+        m_width = width;
+        m_height = height;
+    }
+    std::tuple<int, int> getWindowSize() { return std::make_tuple(m_width, m_height); }
+
     // register window events
-    void registerWindowResize(onResizeFunc func);
-    void registerFrameBufferResize(onResizeFunc func);
-    void registerWindowClose(onCloseFunc func);
+    void registerWindowResize(onResizeFunc func) {
+        m_windowResizeFuncs.push_back(func);
+    }
+    void registerFrameBufferResize(onResizeFunc func) {
+        m_frameBufferResizeFuncs.push_back(func);
+    }
+    void registerWindowClose(onCloseFunc func) {
+        m_closeFuncs.push_back(func);
+    }
 
     // execute registed events
     virtual void onWindowResize(int width, int height) = 0;
@@ -43,6 +53,7 @@ public:
 
     virtual bool shouldClose() const = 0;
     virtual void pollEvents() const = 0;
+    virtual void* getWindowPtr() const = 0;
 
 private:
     Window(const Window& window) = delete;

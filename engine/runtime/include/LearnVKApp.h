@@ -278,17 +278,17 @@ private:
     VkDevice m_device = VK_NULL_HANDLE;
 
     // 交换链
-    VkSwapchainKHR m_swapChain = VK_NULL_HANDLE;
+    VkSwapchainKHR m_swapchain = VK_NULL_HANDLE;
 
     // 交换链中的图像句柄，我们操作其来渲染
-    std::vector<VkImage> m_swapChainImages;
-    VkFormat m_swapChainImageFormat;
-    VkExtent2D m_swapChainImageExtent;
+    std::vector<VkImage> m_swapchainImages;
+    VkFormat m_swapchainImageFormat;
+    VkExtent2D m_swapchainImageExtent;
 
     // 对图像进行操作的views
-    std::vector<VkImageView> m_swapChainImageViews;
+    std::vector<VkImageView> m_swapchainImageViews;
     // 缓冲区
-    std::vector<VkFramebuffer> m_swapChainFrameBuffers;
+    std::vector<VkFramebuffer> m_swapchainFrameBuffers;
 
     // 管线
     VkRenderPass m_renderPass;

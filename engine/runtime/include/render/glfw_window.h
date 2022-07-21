@@ -18,33 +18,15 @@ public:
     virtual void onFrameBufferResize(int width, int height) override;
     virtual bool shouldClose() const override;
     virtual void pollEvents() const override;
-    GLFWwindow* getWindow() const { return m_window; };
+    virtual void* getWindowPtr() const override;
 
 private:
     void setupGlfwCallback();
-    static void windowResizeCallback(GLFWwindow* window, int width, int height) {
-        GlfwWindow* appWindow = static_cast<GlfwWindow*>(glfwGetWindowUserPointer(window));
-        if (appWindow) {
-            appWindow->setWindowSize(width, height);
-            appWindow->onWindowResize(width, height);
-        }
-    }
-
-    static void windowCloseCallback(GLFWwindow* window) {
-        GlfwWindow* appWindow = static_cast<GlfwWindow*>(glfwGetWindowUserPointer(window));
-        if (appWindow) {
-            appWindow->onWindowClose();
-            glfwSetWindowShouldClose(window, true);
-        }
-    }
-
-    static void frameBufferResizeCallback(GLFWwindow* window, int width, int height) {
-        GlfwWindow* appWindow = static_cast<GlfwWindow*>(glfwGetWindowUserPointer(window));
-        if (appWindow) {
-            appWindow->onFrameBufferResize(width, height);
-        }
-    }
+    static void windowResizeCallback(GLFWwindow* window, int width, int height);
+    static void windowCloseCallback(GLFWwindow* window);
+    static void frameBufferResizeCallback(GLFWwindow* window, int width, int height);
 };
+
 } // namespace Kosmos::Runtime
 
 #endif // VULKAN_WINDOW_H
