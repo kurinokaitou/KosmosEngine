@@ -52,7 +52,7 @@ Device::~Device() {
     KS_ENGINE_LOG_TRACE("Logical device has destroyed.");
 }
 
-void Device::createSwapchain(const VkSwapchainCreateInfoKHR& createInfo, VkSwapchainKHR* swapchain, const std::string& name) {
+void Device::createSwapchain(const VkSwapchainCreateInfoKHR& createInfo, VkSwapchainKHR* swapchain, const std::string& name) const {
     if (vkCreateSwapchainKHR(m_device, &createInfo, nullptr, swapchain) == VK_SUCCESS) {
         KS_ENGINE_LOG_TRACE("Swapchain create success.");
     } else {
@@ -60,7 +60,7 @@ void Device::createSwapchain(const VkSwapchainCreateInfoKHR& createInfo, VkSwapc
     }
     m_debugMarkder->setDebugObjectName(&swapchain, VK_DEBUG_REPORT_OBJECT_TYPE_SWAPCHAIN_KHR_EXT, name);
 }
-void Device::createImageView(VkImage image, VkFormat format, VkImageAspectFlags aspectMask, uint32_t mipLevels, VkImageView* imageView, const std::string& name) {
+void Device::createImageView(VkImage image, VkFormat format, VkImageAspectFlags aspectMask, uint32_t mipLevels, VkImageView* imageView, const std::string& name) const {
     auto createInfo = makeInfo<VkImageViewCreateInfo>();
     createInfo.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
     createInfo.image = image;
@@ -84,29 +84,29 @@ void Device::createImageView(VkImage image, VkFormat format, VkImageAspectFlags 
     }
     m_debugMarkder->setDebugObjectName(&imageView, VK_DEBUG_REPORT_OBJECT_TYPE_IMAGE_VIEW_EXT, name);
 }
-void Device::createRenderPass(const VkRenderPassCreateInfo& createInfo, VkRenderPass* renderPass, const std::string& name) {
+void Device::createRenderPass(const VkRenderPassCreateInfo& createInfo, VkRenderPass* renderPass, const std::string& name) const {
 }
-void Device::createGraphicsPipelineLayout(const VkPipelineLayoutCreateInfo& createInfo, VkPipelineLayout* layout, const std::string&) {
+void Device::createGraphicsPipelineLayout(const VkPipelineLayoutCreateInfo& createInfo, VkPipelineLayout* layout, const std::string&) const {
 }
-void Device::createGraphicsPipeline(const VkGraphicsPipelineCreateInfo& createInfo, VkPipeline* pipeline, const std::string& name) {
+void Device::createGraphicsPipeline(const VkGraphicsPipelineCreateInfo& createInfo, VkPipeline* pipeline, const std::string& name) const {
 }
-void Device::createCommandPool(const VkCommandPoolCreateInfo& createInfo, VkCommandPool* commandPool, const std::string& name) {
+void Device::createCommandPool(const VkCommandPoolCreateInfo& createInfo, VkCommandPool* commandPool, const std::string& name) const {
 }
-void Device::createCommandBuffer(const VkCommandBufferAllocateInfo& allocInfo, VkCommandBuffer* commandBuffer, const std::string& name) {
+void Device::createCommandBuffer(const VkCommandBufferAllocateInfo& allocInfo, VkCommandBuffer* commandBuffer, const std::string& name) const {
 }
-void Device::createFrameBuffer(const VkFramebufferCreateInfo& createInfo, VkFramebuffer* frameBuffer, const std::string& name) {
+void Device::createFrameBuffer(const VkFramebufferCreateInfo& createInfo, VkFramebuffer* frameBuffer, const std::string& name) const {
 }
-void Device::createDescriptorSetLayout(const VkDescriptorSetLayoutCreateInfo& createInfo, VkDescriptorSetLayout* descSetLayout, const std::string& name) {
+void Device::createDescriptorSetLayout(const VkDescriptorSetLayoutCreateInfo& createInfo, VkDescriptorSetLayout* descSetLayout, const std::string& name) const {
 }
-void Device::createDescriptorPool(const VkDescriptorPoolCreateInfo& createInfo, VkDescriptorPool* descPool, const std::string& name) {
+void Device::createDescriptorPool(const VkDescriptorPoolCreateInfo& createInfo, VkDescriptorPool* descPool, const std::string& name) const {
 }
-void Device::createSampler(const VkSamplerCreateInfo& createInfo, VkSampler* sampler, const std::string& name) {
+void Device::createSampler(const VkSamplerCreateInfo& createInfo, VkSampler* sampler, const std::string& name) const {
 }
-void Device::createFence(const VkFenceCreateInfo& createInfo, VkFence* fence, const std::string& name) {
+void Device::createFence(const VkFenceCreateInfo& createInfo, VkFence* fence, const std::string& name) const {
 }
-void Device::createSemahore(const VkSemaphoreCreateInfo& createInfo, VkSemaphore* semaphore, const std::string& name) {
+void Device::createSemahore(const VkSemaphoreCreateInfo& createInfo, VkSemaphore* semaphore, const std::string& name) const {
 }
-void Device::createShaderModule(const VkShaderModuleCreateInfo& createInfo, VkShaderModule* shaderModule, const std::string& name) {
+void Device::createShaderModule(const VkShaderModuleCreateInfo& createInfo, VkShaderModule* shaderModule, const std::string& name) const {
 }
 
 void Device::pickPhysicalDevice(VkInstance instance, uint32_t preferPhysicalDeviceIndex) {

@@ -16,6 +16,7 @@ VulkanRenderer::VulkanRenderer(std::shared_ptr<Window> window) :
     m_device = std::make_unique<Device>(m_instance->getVkInstance(), m_surface->getSurface(), false, true);
     auto [width, height] = m_window->getWindowSize();
     m_swapchain = std::make_unique<Swapchain>(*m_device, m_surface->getSurface(), width, height, "defaultSwapchain");
+    m_commandPool = std::make_unique<CommandPool>(*m_device, m_device->getQueueFamiliyIndices().graphicsFamily.value(), "defaultCommandPool");
 }
 
 VulkanRenderer::~VulkanRenderer() {

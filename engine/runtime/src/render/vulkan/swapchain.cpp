@@ -1,10 +1,24 @@
 #include <render/vulkan/swapchain.h>
 #include <render/vulkan/device.h>
+#include <utility>
 using namespace Kosmos::Runtime::Vulkan;
 
-Swapchain::Swapchain(Device& device, VkSurfaceKHR surface, int windowWidth, int windowHeight, const std::string& name, bool enabledVSync) :
+Swapchain::Swapchain(const Device& device, VkSurfaceKHR surface, int windowWidth, int windowHeight, const std::string& name, bool enabledVSync) :
     m_deviceRef(device), m_surfaceRef(surface), m_name(name), m_enabledVSync(enabledVSync) {
     setupSwapchain(VK_NULL_HANDLE, windowWidth, windowHeight);
+}
+
+Swapchain::Swapchain(Swapchain&& swapchain) :
+    m_deviceRef(swapchain.m_deviceRef) {
+    m_swapchain = std::exchange(swapchain.m_swapchain, nullptr);
+    m_surfaceRef = std::exchange(swapchain.m_surfaceRef, nullptr);
+    m_swapchainImageViews = std::move(swapchain.m_swapchainImageViews);
+    m_swapchainImages = std::move(swapchain.m_swapchainImages);
+    m_enabledVSync = swapchain.m_enabledVSync;
+    m_swapchainImageCount = swapchain.m_swapchainImageCount;
+    m_name = std::move(swapchain.m_name);
+    m_swapchainImageExtent = swapchain.m_swapchainImageExtent;
+    m_swapchainImageFormat = swapchain.m_swapchainImageFormat;
 }
 
 Swapchain::~Swapchain() {
@@ -55,9 +69,6 @@ void Swapchain::setupSwapchain(VkSwapchainKHR oldSwapchain, int windowWidth, int
     auto queueFamilyIndice = m_deviceRef.getQueueFamiliyIndices();
     auto& indicesSet = queueFamilyIndice.familiesIndexSet;
     std::vector<uint32_t> indices(indicesSet.begin(), indicesSet.end());
-    for (auto& index : indicesSet) {
-        KS_LOG_TRACE("{0}", index);
-    }
     if (indicesSet.size() != 1) {
         createInfo.imageSharingMode = VK_SHARING_MODE_CONCURRENT;
         createInfo.queueFamilyIndexCount = static_cast<uint32_t>(indicesSet.size());

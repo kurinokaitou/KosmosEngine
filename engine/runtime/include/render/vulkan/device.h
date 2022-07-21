@@ -101,20 +101,20 @@ public:
     std::vector<VkPresentModeKHR> getAvailablePresentMode() const { return m_presentModes; }
     QueueFamiliyIndices getQueueFamiliyIndices() const { return m_queueFamilyIndices; }
 
-    void createSwapchain(const VkSwapchainCreateInfoKHR& createInfo, VkSwapchainKHR* swapchain, const std::string& name = "swapchain");
-    void createImageView(VkImage image, VkFormat format, VkImageAspectFlags aspectMask, uint32_t mipLevels, VkImageView* imageView, const std::string& name);
-    void createRenderPass(const VkRenderPassCreateInfo& createInfo, VkRenderPass* renderPass, const std::string& name = "renderPass");
-    void createGraphicsPipelineLayout(const VkPipelineLayoutCreateInfo& createInfo, VkPipelineLayout* layout, const std::string& = "pipelineLayout");
-    void createGraphicsPipeline(const VkGraphicsPipelineCreateInfo& createInfo, VkPipeline* pipeline, const std::string& name = "pipeline");
-    void createCommandPool(const VkCommandPoolCreateInfo& createInfo, VkCommandPool* commandPool, const std::string& name = "commandPool");
-    void createCommandBuffer(const VkCommandBufferAllocateInfo& allocInfo, VkCommandBuffer* commandBuffer, const std::string& name = "commandBuffer");
-    void createFrameBuffer(const VkFramebufferCreateInfo& createInfo, VkFramebuffer* frameBuffer, const std::string& name = "frameBuffer");
-    void createDescriptorSetLayout(const VkDescriptorSetLayoutCreateInfo& createInfo, VkDescriptorSetLayout* descSetLayout, const std::string& name = "descSetLayout");
-    void createDescriptorPool(const VkDescriptorPoolCreateInfo& createInfo, VkDescriptorPool* descPool, const std::string& name = "descPool");
-    void createSampler(const VkSamplerCreateInfo& createInfo, VkSampler* sampler, const std::string& name = "sampler");
-    void createFence(const VkFenceCreateInfo& createInfo, VkFence* fence, const std::string& name = "fence");
-    void createSemahore(const VkSemaphoreCreateInfo& createInfo, VkSemaphore* semaphore, const std::string& name = "semaphore");
-    void createShaderModule(const VkShaderModuleCreateInfo& createInfo, VkShaderModule* shaderModule, const std::string& name = "shaderModule");
+    void createSwapchain(const VkSwapchainCreateInfoKHR& createInfo, VkSwapchainKHR* swapchain, const std::string& name = "swapchain") const;
+    void createImageView(VkImage image, VkFormat format, VkImageAspectFlags aspectMask, uint32_t mipLevels, VkImageView* imageView, const std::string& name) const;
+    void createRenderPass(const VkRenderPassCreateInfo& createInfo, VkRenderPass* renderPass, const std::string& name = "renderPass") const;
+    void createGraphicsPipelineLayout(const VkPipelineLayoutCreateInfo& createInfo, VkPipelineLayout* layout, const std::string& = "pipelineLayout") const;
+    void createGraphicsPipeline(const VkGraphicsPipelineCreateInfo& createInfo, VkPipeline* pipeline, const std::string& name = "pipeline") const;
+    void createCommandPool(const VkCommandPoolCreateInfo& createInfo, VkCommandPool* commandPool, const std::string& name = "commandPool") const;
+    void createCommandBuffer(const VkCommandBufferAllocateInfo& allocInfo, VkCommandBuffer* commandBuffer, const std::string& name = "commandBuffer") const;
+    void createFrameBuffer(const VkFramebufferCreateInfo& createInfo, VkFramebuffer* frameBuffer, const std::string& name = "frameBuffer") const;
+    void createDescriptorSetLayout(const VkDescriptorSetLayoutCreateInfo& createInfo, VkDescriptorSetLayout* descSetLayout, const std::string& name = "descSetLayout") const;
+    void createDescriptorPool(const VkDescriptorPoolCreateInfo& createInfo, VkDescriptorPool* descPool, const std::string& name = "descPool") const;
+    void createSampler(const VkSamplerCreateInfo& createInfo, VkSampler* sampler, const std::string& name = "sampler") const;
+    void createFence(const VkFenceCreateInfo& createInfo, VkFence* fence, const std::string& name = "fence") const;
+    void createSemahore(const VkSemaphoreCreateInfo& createInfo, VkSemaphore* semaphore, const std::string& name = "semaphore") const;
+    void createShaderModule(const VkShaderModuleCreateInfo& createInfo, VkShaderModule* shaderModule, const std::string& name = "shaderModule") const;
 
 private:
     void pickPhysicalDevice(VkInstance instance, uint32_t preferPhysicalDeviceIndex);

@@ -7,7 +7,7 @@ namespace Kosmos::Runtime::Vulkan {
 class Device;
 class Swapchain {
 private:
-    Device& m_deviceRef;
+    const Device& m_deviceRef;
     VkSwapchainKHR m_swapchain{VK_NULL_HANDLE};
     VkSurfaceKHR m_surfaceRef{VK_NULL_HANDLE};
     std::string m_name;
@@ -21,7 +21,8 @@ private:
     uint32_t m_swapchainImageCount{0};
 
 public:
-    Swapchain(Device& device, VkSurfaceKHR surface, int windowWidth, int windowHeight, const std::string& name, bool enabledVSync = true);
+    Swapchain(const Device& device, VkSurfaceKHR surface, int windowWidth, int windowHeight, const std::string& name, bool enabledVSync = true);
+    Swapchain(Swapchain&& swapchain);
     ~Swapchain();
     void recreateSwapchain(int windowWidth, int windowHeight);
     VkSwapchainKHR getSwapchain() const { return m_swapchain; }
@@ -36,6 +37,11 @@ private:
     VkSurfaceFormatKHR chooseBestfitSurfaceFormat(const std::vector<VkSurfaceFormatKHR>& formats);
     VkPresentModeKHR chooseBestfitPresentMode(const std::vector<VkPresentModeKHR>& presentModes);
     VkExtent2D chooseSwapExtent(const VkSurfaceCapabilitiesKHR& capabilities, int windowWidth, int windowHeight);
+
+private:
+    Swapchain(Swapchain& swapchain) = delete;
+    Swapchain& operator=(Swapchain&& swapchain) = delete;
+    Swapchain& operator=(const Swapchain& swapchain) = delete;
 };
 } // namespace Kosmos::Runtime::Vulkan
 #endif // SWAPCHAIN_H
