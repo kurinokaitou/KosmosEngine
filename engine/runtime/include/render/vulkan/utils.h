@@ -8,6 +8,7 @@
 #include <vector>
 #include <memory.h>
 #include <algorithm>
+#include <limits.h>
 #include <core/log.h>
 #include "make_info.h"
 
