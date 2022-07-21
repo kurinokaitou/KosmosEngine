@@ -30,7 +30,8 @@
                 "-G",
                 "Ninja",
                 "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON",
-                "-DCMAKE_BUILD_TYPE=Release"
+                "-DCMAKE_BUILD_TYPE=Release",
+                "-DCMAKE_TOOLCHAIN_FILE=D://vcpkg//scripts//buildsystems//vcpkg.cmake"
             ],
             "detail": "cmake release configuration",
             "options": {
@@ -44,7 +45,7 @@
             "command": "cmake",
             "args": [
                 "--build",
-                "build",
+                "dist",
                 "-j6"
             ],
             "options": {
@@ -73,12 +74,22 @@
         {
             "label": "run",
             "type": "shell",
+            "command": "${workspaceFolder}/dist/engine/editor/KosmosEditor.exe",
+            "args": [],
+            "options": {
+                "cwd": "${workspaceFolder}/dist"
+            },
+            "detail": "run project",
+        },
+        {
+            "label": "debug run",
+            "type": "shell",
             "command": "${workspaceFolder}/build/engine/editor/KosmosEditor.exe",
             "args": [],
             "options": {
                 "cwd": "${workspaceFolder}/build"
             },
-            "detail": "run project",
+            "detail": "debug run project",
         },
         {
             "type": "cmake",

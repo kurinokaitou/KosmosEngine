@@ -33,6 +33,7 @@
 
 #directories
 build
+dist
 generated
 resource
 .cache
