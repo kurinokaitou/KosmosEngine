@@ -1,9 +1,8 @@
 # KosmosEngine
 Game engine project
 ## 初始化Vscode开发环境
-本项目使用的是msys2提供的MinGW 64-bit C/C++环境，使用g++作为编译器。然后构建项目需要配置CMake和NinJa的构建系统，首先下载CMake和Ninja并且添加binary到系统环境变量Path中。
-[Ninja]: https://ninja-build.org/	"Ninja的官网"
-首先需要确保安装并激活了以下C/C++开发的插件。第一次打开工程会推荐安装，全部安装即可：
+本项目使用的是msys2提供的MinGW 64-bit C/C++环境，使用g++作为编译器。构建项目需要配置CMake和NinJa的构建系统，首先下载CMake和Ninja并且添加binary到系统环境变量Path中。
+然后需要确保安装并激活了以下C/C++开发的插件。第一次打开工程会推荐安装，全部安装即可：
 
 ```json
 {
