@@ -53,7 +53,7 @@
             },
             "detail": "build project",
             "dependsOn": [
-                "cmake debug"
+                "cmake release"
             ]
         },
         {
@@ -70,6 +70,9 @@
                 "cwd": "${workspaceFolder}"
             },
             "detail": "debug build project",
+            "dependsOn": [
+                "cmake debug"
+            ]
         },
         {
             "label": "run",
