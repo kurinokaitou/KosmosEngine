@@ -1,6 +1,6 @@
 #ifndef SEMAPHORE_H
 #define SEMAPHORE_H
-#include <render/vulkan/utils.h>
+#include <render/vulkan/Utils.h>
 namespace Kosmos::Runtime::Vulkan {
 class Device;
 class Semaphore {

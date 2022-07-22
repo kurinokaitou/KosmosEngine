@@ -1,6 +1,6 @@
 #ifndef SURFACE_H
 #define SURFACE_H
-#include <render/vulkan/utils.h>
+#include <render/vulkan/Utils.h>
 namespace Kosmos::Runtime::Vulkan {
 class Surface {
 private:

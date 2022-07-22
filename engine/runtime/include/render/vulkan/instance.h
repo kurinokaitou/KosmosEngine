@@ -1,6 +1,6 @@
 #ifndef INSTANCE_H
 #define INSTANCE_H
-#include <render/vulkan/utils.h>
+#include <render/vulkan/Utils.h>
 namespace Kosmos::Runtime::Vulkan {
 class Instance {
 private:

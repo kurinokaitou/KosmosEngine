@@ -1,4 +1,4 @@
-#include <render/vulkan/surface.h>
+#include <render/vulkan/Surface.h>
 using namespace Kosmos::Runtime::Vulkan;
 Surface::Surface(VkInstance instance, GLFWwindow* window) :
     m_instanceRef(instance) {
