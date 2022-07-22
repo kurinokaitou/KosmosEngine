@@ -1,5 +1,5 @@
-#include <render/vulkan/command_pool.h>
-#include <render/vulkan/device.h>
+#include <render/vulkan/CommandPool.h>
+#include <render/vulkan/Device.h>
 
 using namespace Kosmos::Runtime::Vulkan;
 CommandPool::CommandPool(const Device& device, const uint32_t queueIndex, const std::string& name) :
@@ -8,7 +8,6 @@ CommandPool::CommandPool(const Device& device, const uint32_t queueIndex, const 
     createInfo.queueFamilyIndex = queueIndex;
     createInfo.flags = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT;
     m_deviceRef.createCommandPool(createInfo, &m_commandPool, m_name);
-    KS_ENGINE_LOG_TRACE("CommandPool create success.");
 }
 
 CommandPool::CommandPool(CommandPool&& commandPool) :

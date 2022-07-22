@@ -1,5 +1,5 @@
-#include <render/glfw_window.h>
-#include <render/vulkan/vulkan_renderer.h>
+#include <render/GlfwWindow.h>
+#include <render/vulkan/VulkanRenderer.h>
 using namespace Kosmos::Runtime::Vulkan;
 VulkanRenderer::VulkanRenderer(std::shared_ptr<Window> window) :
     Renderer(window) {

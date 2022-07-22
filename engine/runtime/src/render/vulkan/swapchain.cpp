@@ -1,5 +1,5 @@
-#include <render/vulkan/swapchain.h>
-#include <render/vulkan/device.h>
+#include <render/vulkan/Swapchain.h>
+#include <render/vulkan/Device.h>
 #include <utility>
 using namespace Kosmos::Runtime::Vulkan;
 

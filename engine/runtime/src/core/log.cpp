@@ -1,4 +1,4 @@
-#include <core/log.h>
+#include <core/Log.h>
 #include <vendor/spdlog/async.h>
 #include <vendor/spdlog/sinks/basic_file_sink.h>
 #include <vendor/spdlog/sinks/stdout_color_sinks.h>

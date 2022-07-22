@@ -9,8 +9,8 @@
 #include <memory.h>
 #include <algorithm>
 #include <limits.h>
-#include <core/log.h>
-#include "make_info.h"
+#include <core/Log.h>
+#include "MakeInfo.h"
 
 namespace Kosmos::Runtime::Vulkan {
 class Utils {

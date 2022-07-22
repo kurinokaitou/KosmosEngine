@@ -1,5 +1,5 @@
-#include <render/vulkan/fence.h>
-#include <render/vulkan/device.h>
+#include <render/vulkan/Fence.h>
+#include <render/vulkan/Device.h>
 using namespace Kosmos::Runtime::Vulkan;
 
 Fence::Fence(const Device& device, const std::string& name, bool initSignaledState) :

@@ -1,5 +1,5 @@
-#include <render/vulkan/semaphore.h>
-#include <render/vulkan/device.h>
+#include <render/vulkan/Semaphore.h>
+#include <render/vulkan/Device.h>
 using namespace Kosmos::Runtime::Vulkan;
 
 Semaphore::Semaphore(const Device& device, std::string& name) :

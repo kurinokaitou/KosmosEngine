@@ -1,7 +1,7 @@
 #ifndef RENDERER_H
 #define RENDERER_H
-#include <core/window.h>
-#include "render_graph.h"
+#include <core/Window.h>
+#include "RenderGraph.h"
 #include <memory>
 namespace Kosmos::Runtime {
 

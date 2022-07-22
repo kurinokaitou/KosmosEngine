@@ -1,7 +1,7 @@
 #ifndef VULKAN_WINDOW_H
 #define VULKAN_WINDOW_H
 #include <GLFW/glfw3.h>
-#include <core/window.h>
+#include <core/Window.h>
 namespace Kosmos::Runtime {
 class GlfwWindow : public Window {
 private:

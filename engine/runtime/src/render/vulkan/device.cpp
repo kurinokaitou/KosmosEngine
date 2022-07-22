@@ -1,6 +1,5 @@
-#include <render/renderer.h>
-#include <render/vulkan/device.h>
-#include <vulkan/vulkan_core.h>
+#include <render/Renderer.h>
+#include <render/vulkan/Device.h>
 using namespace Kosmos::Runtime::Vulkan;
 
 Device::Device(VkInstance instance, VkSurfaceKHR surface, bool enabledDebugMarker, bool useDifferTransQueue, uint32_t preferPhysicalDeviceIndex) :
@@ -91,6 +90,12 @@ void Device::createGraphicsPipelineLayout(const VkPipelineLayoutCreateInfo& crea
 void Device::createGraphicsPipeline(const VkGraphicsPipelineCreateInfo& createInfo, VkPipeline* pipeline, const std::string& name) const {
 }
 void Device::createCommandPool(const VkCommandPoolCreateInfo& createInfo, VkCommandPool* commandPool, const std::string& name) const {
+    if (vkCreateCommandPool(m_device, &createInfo, nullptr, commandPool) == VK_SUCCESS) {
+        KS_ENGINE_LOG_TRACE("Command pool create success.");
+    } else {
+        KS_ENGINE_LOG_FATAL("Failed to create command pool!");
+    }
+    m_debugMarkder->setDebugObjectName(&commandPool, VK_DEBUG_REPORT_OBJECT_TYPE_COMMAND_POOL_EXT, name);
 }
 void Device::createCommandBuffer(const VkCommandBufferAllocateInfo& allocInfo, VkCommandBuffer* commandBuffer, const std::string& name) const {
 }
@@ -103,8 +108,20 @@ void Device::createDescriptorPool(const VkDescriptorPoolCreateInfo& createInfo, 
 void Device::createSampler(const VkSamplerCreateInfo& createInfo, VkSampler* sampler, const std::string& name) const {
 }
 void Device::createFence(const VkFenceCreateInfo& createInfo, VkFence* fence, const std::string& name) const {
+    if (vkCreateFence(m_device, &createInfo, nullptr, fence) == VK_SUCCESS) {
+        KS_ENGINE_LOG_TRACE("Fence create success.");
+    } else {
+        KS_ENGINE_LOG_FATAL("Failed to create fence!");
+    }
+    m_debugMarkder->setDebugObjectName(&fence, VK_DEBUG_REPORT_OBJECT_TYPE_FENCE_EXT, name);
 }
 void Device::createSemahore(const VkSemaphoreCreateInfo& createInfo, VkSemaphore* semaphore, const std::string& name) const {
+    if (vkCreateSemaphore(m_device, &createInfo, nullptr, semaphore) == VK_SUCCESS) {
+        KS_ENGINE_LOG_TRACE("Semaphore create success.");
+    } else {
+        KS_ENGINE_LOG_FATAL("Failed to create semaphore!");
+    }
+    m_debugMarkder->setDebugObjectName(&semaphore, VK_DEBUG_REPORT_OBJECT_TYPE_SEMAPHORE_EXT, name);
 }
 void Device::createShaderModule(const VkShaderModuleCreateInfo& createInfo, VkShaderModule* shaderModule, const std::string& name) const {
 }

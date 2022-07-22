@@ -3,7 +3,7 @@
 #include <array>
 #include <set>
 #include <optional>
-#include <render/vulkan/utils.h>
+#include <render/vulkan/Utils.h>
 #include <vma/vk_mem_alloc.h>
 
 namespace Kosmos::Runtime::Vulkan {

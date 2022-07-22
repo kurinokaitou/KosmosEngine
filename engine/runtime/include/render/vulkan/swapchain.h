@@ -1,7 +1,6 @@
 #ifndef SWAPCHAIN_H
 #define SWAPCHAIN_H
-#include "vulkan/vulkan_core.h"
-#include <render/vulkan/utils.h>
+#include <render/vulkan/Utils.h>
 #include <stdint.h>
 namespace Kosmos::Runtime::Vulkan {
 class Device;

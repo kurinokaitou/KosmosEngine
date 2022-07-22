@@ -1,5 +1,5 @@
-#include <render/glfw_window.h>
-#include <core/log.h>
+#include <render/GlfwWindow.h>
+#include <core/Log.h>
 
 using namespace Kosmos::Runtime;
 

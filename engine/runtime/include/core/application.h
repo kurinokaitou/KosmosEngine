@@ -1,8 +1,8 @@
 #ifndef APPLICATION_H
 #define APPLICATION_H
 
-#include "window.h"
-#include <render/renderer.h>
+#include "Window.h"
+#include <render/Renderer.h>
 #include <memory>
 #include <string>
 int main(int argc, char** argv);
