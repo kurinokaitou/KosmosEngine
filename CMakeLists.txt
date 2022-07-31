@@ -8,3 +8,4 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_subdirectory(engine/runtime)
 add_subdirectory(engine/editor)
+add_subdirectory(test)

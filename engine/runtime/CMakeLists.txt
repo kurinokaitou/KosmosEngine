@@ -28,10 +28,9 @@ target_link_libraries(${KOSMOS_ENGINE_NAME} PUBLIC glm::glm)
 target_link_libraries(${KOSMOS_ENGINE_NAME} PUBLIC fmt::fmt)
 target_link_libraries(${KOSMOS_ENGINE_NAME} PUBLIC tinyobjloader::tinyobjloader)
 target_link_libraries(${KOSMOS_ENGINE_NAME} PUBLIC imgui::imgui)
-# target_link_libraries(${KOSMOS_ENGINE_NAME} PUBLIC PThreads4W::PThreads4W)
-
-target_link_libraries(${KOSMOS_ENGINE_NAME} PRIVATE glfw)
-target_link_libraries(${KOSMOS_ENGINE_NAME} PRIVATE ${VK_SDK_LIB})
+# target_link_libraries(${KOSMOS_ENGINE_NAME} PRIVATE PThreads4W::PThreads4W)
+target_link_libraries(${KOSMOS_ENGINE_NAME} PUBLIC glfw)
+target_link_libraries(${KOSMOS_ENGINE_NAME} PUBLIC ${VK_SDK_LIB})
 # 添加预编译头
 target_compile_definitions(${KOSMOS_ENGINE_NAME} 
     PUBLIC
@@ -48,7 +47,7 @@ target_compile_definitions(${KOSMOS_ENGINE_NAME}
 # LINK_FLAGS "-pthread")
 # 添加包含目录
 target_include_directories(${KOSMOS_ENGINE_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
-target_include_directories(${KOSMOS_ENGINE_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include/vendor)
+target_include_directories(${KOSMOS_ENGINE_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include/vendor)
 target_include_directories(${KOSMOS_ENGINE_NAME} PUBLIC ${VK_SDK_INCLUDE})
 
 

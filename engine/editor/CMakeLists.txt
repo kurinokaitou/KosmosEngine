@@ -7,7 +7,6 @@ source_group(TREE "${CMAKE_CURRENT_SOURCE_DIR}" FILES ${HEADER_FILES} ${SOURCE_F
 
 add_executable(${KOSMOS_EDITOR_NAME} ${SOURCE_FILES})
 
-target_link_libraries(${KOSMOS_EDITOR_NAME} PRIVATE ${KOSMOS_ENGINE_NAME})
-# target_include_directories(${KOSMOS_EDITOR_NAME} PRIVATE ../runtime/include)
+target_link_libraries(${KOSMOS_EDITOR_NAME} ${KOSMOS_ENGINE_NAME})
 target_include_directories(${KOSMOS_EDITOR_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
 add_dependencies(${KOSMOS_EDITOR_NAME} ${KOSMOS_ENGINE_NAME})
