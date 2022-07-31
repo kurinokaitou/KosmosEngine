@@ -2,7 +2,7 @@
 #define WINDOW
 
 #include <functional>
-#include <stdint.h>
+#include <cstdint>
 #include <tuple>
 #include <vector>
 

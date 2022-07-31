@@ -6,8 +6,8 @@
 #include <stdint.h>
 //#define PRINT_EXTENTION_INFO
 
-#include "tiny_obj_loader.h"
-#include "vulkan/vulkan_core.h"
+#include <tiny_obj_loader.h>
+#include <vulkan/vulkan_core.h>
 #include <GLFW/glfw3.h>
 #include <algorithm>
 #include <array>
@@ -26,14 +26,12 @@
 #include <unordered_map>
 #include <vector>
 #include <vendor/stb_image.h>
-#include <vulkan/vulkan.h>
 
 #include <fragment_frag.h>
 #include <vertex_vert.h>
 
 const static uint64_t MAX_TIMEOUT = std::numeric_limits<uint64_t>::max();
-const static int MAX_FRAMES_IN_FLIGHT =
-    2; // 代表预渲染队列的帧数量， 如果为1则无预渲染
+const static int MAX_FRAMES_IN_FLIGHT = 2; // 代表预渲染队列的帧数量， 如果为1则无预渲染
 const static std::string CURRENT_PATH =
     std::filesystem::current_path().generic_string();
 const static std::string RESOURCE_PATH = std::filesystem::current_path()

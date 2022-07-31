@@ -14,6 +14,7 @@ find_package(glfw3 CONFIG REQUIRED)
 find_package(tinyobjloader CONFIG REQUIRED)
 find_package(fmt CONFIG REQUIRED)
 find_package(imgui CONFIG REQUIRED)
+# find_package(PThreads4W CONFIG REQUIRED)
 
 # 将源代码添加到此项目的可执行文件
 file(GLOB_RECURSE HEADER_FILES ${CMAKE_CURRENT_SOURCE_DIR} "include/*.h")
@@ -27,6 +28,7 @@ target_link_libraries(${KOSMOS_ENGINE_NAME} PUBLIC glm::glm)
 target_link_libraries(${KOSMOS_ENGINE_NAME} PUBLIC fmt::fmt)
 target_link_libraries(${KOSMOS_ENGINE_NAME} PUBLIC tinyobjloader::tinyobjloader)
 target_link_libraries(${KOSMOS_ENGINE_NAME} PUBLIC imgui::imgui)
+# target_link_libraries(${KOSMOS_ENGINE_NAME} PUBLIC PThreads4W::PThreads4W)
 
 target_link_libraries(${KOSMOS_ENGINE_NAME} PRIVATE glfw)
 target_link_libraries(${KOSMOS_ENGINE_NAME} PRIVATE ${VK_SDK_LIB})
@@ -40,9 +42,13 @@ target_compile_definitions(${KOSMOS_ENGINE_NAME}
         TINYOBJLOADER_IMPLEMENTATION
         GLM_ENABLE_EXPERIMENTAL
 )
+
+# set_target_properties(${KOSMOS_ENGINE_NAME} PROPERTIES
+# COMPILE_FLAGS "-pthread"
+# LINK_FLAGS "-pthread")
 # 添加包含目录
 target_include_directories(${KOSMOS_ENGINE_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
-target_include_directories(${KOSMOS_ENGINE_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include/vendor)
+target_include_directories(${KOSMOS_ENGINE_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include/vendor)
 target_include_directories(${KOSMOS_ENGINE_NAME} PUBLIC ${VK_SDK_INCLUDE})
 
 
