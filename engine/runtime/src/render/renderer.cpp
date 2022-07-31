@@ -1,4 +1,3 @@
-#include <memory>
 #include <render/Renderer.h>
 using namespace Kosmos::Runtime;
 

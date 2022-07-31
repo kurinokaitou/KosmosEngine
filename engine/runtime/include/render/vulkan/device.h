@@ -100,6 +100,7 @@ public:
     std::vector<VkSurfaceFormatKHR> getAvailableSurfaceFormats() const { return m_formats; }
     std::vector<VkPresentModeKHR> getAvailablePresentMode() const { return m_presentModes; }
     QueueFamiliyIndices getQueueFamiliyIndices() const { return m_queueFamilyIndices; }
+    VmaAllocator getAllocator() const { return m_vmaAllocator; }
 
     void createSwapchain(const VkSwapchainCreateInfoKHR& createInfo, VkSwapchainKHR* swapchain, const std::string& name = "swapchain") const;
     void createImageView(VkImage image, VkFormat format, VkImageAspectFlags aspectMask, uint32_t mipLevels, VkImageView* imageView, const std::string& name) const;

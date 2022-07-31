@@ -3,8 +3,6 @@
 
 #include "Window.h"
 #include <render/Renderer.h>
-#include <memory>
-#include <string>
 int main(int argc, char** argv);
 namespace Kosmos::Runtime {
 struct ApplicationCreateInfo {

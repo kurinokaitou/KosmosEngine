@@ -1,14 +1,14 @@
 #ifndef UTILS_H
 #define UTILS_H
 #include <GLFW/glfw3.h>
-#include <string.h>
-#include <stdint.h>
+#include <cstring>
+#include <cstdint>
 #include <string>
 #include <assert.h>
 #include <vector>
-#include <memory.h>
+#include <memory>
 #include <algorithm>
-#include <limits.h>
+#include <limits>
 #include <core/Log.h>
 #include "MakeInfo.h"
 
