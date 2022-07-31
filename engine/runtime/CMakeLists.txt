@@ -43,7 +43,7 @@ target_compile_definitions(${KOSMOS_ENGINE_NAME}
 # 添加包含目录
 target_include_directories(${KOSMOS_ENGINE_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 target_include_directories(${KOSMOS_ENGINE_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include/vendor)
-target_include_directories(${KOSMOS_ENGINE_NAME} PRIVATE ${VK_SDK_INCLUDE})
+target_include_directories(${KOSMOS_ENGINE_NAME} PUBLIC ${VK_SDK_INCLUDE})
 
 
 # 编译着色器
