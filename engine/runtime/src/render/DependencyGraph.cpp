@@ -8,7 +8,7 @@ DependencyGraph::DependencyGraph() {
 }
 
 void DependencyGraph::typologyCull() {
-    std::stack<Node*> culledStack;
+    std::stack<std::shared_ptr<Node>> culledStack;
     for (auto node : m_nodes) {
         if (node->getRefCount() == 0) {
             culledStack.push(node);
@@ -38,27 +38,27 @@ bool DependencyGraph::isEdgeValid(const Edge* edge) {
     auto toNode = m_nodes[edge->m_toNode];
     return !fromNode->isCulled() && !toNode->isCulled();
 }
-std::vector<DependencyGraph::Edge*> DependencyGraph::getNodeInwardEdges(const Node* node) {
-    std::vector<Edge*> inward;
+std::vector<std::shared_ptr<DependencyGraph::Edge>> DependencyGraph::getNodeInwardEdges(const std::shared_ptr<Node> node) {
+    std::vector<std::shared_ptr<Edge>> inward;
     NodeHandle handle = node->getNodeHandle();
-    std::copy_if(m_edges.begin(), m_edges.end(), inward.begin(), [handle](Edge* edge) {
+    std::copy_if(m_edges.begin(), m_edges.end(), inward.begin(), [handle](auto edge) {
         return edge->m_toNode == handle;
     });
     return inward;
 }
-std::vector<DependencyGraph::Edge*> DependencyGraph::getNodeOutwardEdges(const Node* node) {
-    std::vector<Edge*> outward;
+std::vector<std::shared_ptr<DependencyGraph::Edge>> DependencyGraph::getNodeOutwardEdges(const std::shared_ptr<Node> node) {
+    std::vector<std::shared_ptr<Edge>> outward;
     NodeHandle handle = node->getNodeHandle();
-    std::copy_if(m_edges.begin(), m_edges.end(), outward.begin(), [handle](Edge* edge) {
+    std::copy_if(m_edges.begin(), m_edges.end(), outward.begin(), [handle](auto edge) {
         return edge->m_fromNode == handle;
     });
     return outward;
 }
 
-void DependencyGraph::registerNode(Node* node) {
+void DependencyGraph::registerNode(const std::shared_ptr<Node> node) {
     m_nodes.push_back(node);
 }
-void DependencyGraph::registerEgde(Edge* edge) {
+void DependencyGraph::registerEgde(const std::shared_ptr<Edge> edge) {
     m_nodes[edge->m_fromNode]->m_refCount++;
     m_edges.push_back(edge);
 }

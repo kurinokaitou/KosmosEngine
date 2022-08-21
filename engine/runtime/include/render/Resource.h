@@ -13,7 +13,7 @@ protected:
 public:
     VirtualResource(const std::string& name);
     VirtualResource(const std::string& name, VirtualResource* parent);
-    VirtualResource(VirtualResource&& resource);
+    VirtualResource(VirtualResource&& resource) noexcept;
     virtual ~VirtualResource() = default;
     bool isSubResource() const { return m_parent != this; }
     VirtualResource* getResource() {
@@ -115,7 +115,7 @@ public:
         Resource<FrameBuffer>(name, description) {
         m_isDetached = true;
     }
-    RenderTarget(RenderTarget&& renderTarget) :
+    RenderTarget(RenderTarget&& renderTarget)  noexcept:
         Resource<FrameBuffer>(std::move(renderTarget)) {}
     ~RenderTarget() = default;
 

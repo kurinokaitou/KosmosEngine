@@ -4,7 +4,7 @@
 #include <memory>
 #include <stdexcept>
 #include <iostream>
-#include <vendor/spdlog/spdlog.h>
+#include <spdlog/spdlog.h>
 namespace Kosmos::Runtime {
 class Logger {
 public:

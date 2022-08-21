@@ -1,7 +1,7 @@
 #include <core/Log.h>
-#include <vendor/spdlog/async.h>
-#include <vendor/spdlog/sinks/basic_file_sink.h>
-#include <vendor/spdlog/sinks/stdout_color_sinks.h>
+#include <spdlog/async.h>
+#include <spdlog/sinks/basic_file_sink.h>
+#include <spdlog/sinks/stdout_color_sinks.h>
 using namespace Kosmos::Runtime;
 
 std::shared_ptr<spdlog::logger> Logger::s_appLogger;

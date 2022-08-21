@@ -4,6 +4,7 @@
 #include <vector>
 #include <string>
 #include <cstdint>
+#include <memory>
 namespace Kosmos::Runtime::RenderGraph {
 const static uint32_t INF_REF_COUNT = std::numeric_limits<uint32_t>::max();
 class DependencyGraph {
@@ -22,7 +23,7 @@ public:
     public:
         Node(DependencyGraph& graph, std::string& name) :
             m_name(name), m_index(graph.newNodeHandle()) {
-            graph.registerNode(this);
+            graph.registerNode(std::shared_ptr<Node>(this));
         }
         virtual ~Node() = default;
         bool isCulled() const { return m_refCount == 0; }
@@ -46,13 +47,13 @@ public:
     public:
         Edge(DependencyGraph& graph, Node* from, Node* to) :
             m_fromNode(from->getNodeHandle()), m_toNode(to->getNodeHandle()) {
-            graph.registerEgde(this);
+            graph.registerEgde(std::shared_ptr<Edge>(this));
         }
     };
 
 private:
-    std::vector<Node*> m_nodes;
-    std::vector<Edge*> m_edges;
+    std::vector<std::shared_ptr<Node>> m_nodes;
+    std::vector<std::shared_ptr<Edge>> m_edges;
 
 public:
     DependencyGraph();
@@ -61,13 +62,12 @@ public:
     void clear();
     void exportGraphviz();
     bool isEdgeValid(const Edge* edge);
-    std::vector<Edge*> getNodeInwardEdges(const Node* node);
-    std::vector<Edge*> getNodeOutwardEdges(const Node* node);
-    Node* getNode(NodeHandle handle) { return m_nodes[handle]; };
-
+    std::vector<std::shared_ptr<Edge>> getNodeInwardEdges(const std::shared_ptr<Node> node);
+    std::vector<std::shared_ptr<Edge>> getNodeOutwardEdges(const std::shared_ptr<Node> node);
+    std::shared_ptr<Node> getNode(NodeHandle handle) { return m_nodes[handle]; };
 private:
-    void registerNode(Node* handle);
-    void registerEgde(Edge* edge);
+    void registerNode(const std::shared_ptr<Node> node);
+    void registerEgde(const std::shared_ptr<Edge> node);
     NodeHandle newNodeHandle() const { return m_nodes.size(); }
 
 private:
