@@ -1,7 +1,7 @@
 #ifndef RENDER_GRAPH_HANDLE
 #define RENDER_GRAPH_HANDLE
 #include <limits>
-namespace Kosmos::Runtime::RenderGraph {
+namespace Kosmos::Runtime::RDG {
 struct ResourceSlot {
     uint32_t rid = 0;  // resource id;
     uint32_t nid = 0;  // node id;
@@ -42,5 +42,5 @@ public:
         return (index != rhs.index);
     }
 };
-} // namespace Kosmos::Runtime::RenderGraph
+} // namespace Kosmos::Runtime::RDG
 #endif // RENDER_GRAPH_HANDLE

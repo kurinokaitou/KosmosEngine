@@ -1,6 +1,6 @@
 #include <render/ResourceNode.h>
 #include <render/RenderGraph.h>
-using namespace Kosmos::Runtime::RenderGraph;
+using namespace Kosmos::Runtime::RDG;
 
 ResourceNode::ResourceNode(RenderGraph& rdg, RenderGraphHandle parent) :
     Node(rdg.getDepGraph()), m_rdgRef(rdg), m_parentHandle(parent) {}
@@ -15,7 +15,7 @@ void ResourceNode::addOutwardEdge(const std::shared_ptr<Edge> edge) {
 
 std::optional<std::shared_ptr<ResourceNode>> ResourceNode::getParentNode() {
     if (m_parentHandle.isInitialized()) {
-        return m_rdgRef.getInSlotResourceNode(m_parentHandle);
+        return m_rdgRef.getResourceNode(m_parentHandle);
     } else {
         return std::nullopt;
     }

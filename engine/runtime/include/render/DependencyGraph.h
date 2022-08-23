@@ -5,7 +5,7 @@
 #include <string>
 #include <cstdint>
 #include <memory>
-namespace Kosmos::Runtime::RenderGraph {
+namespace Kosmos::Runtime::RDG {
 const static uint32_t INF_REF_COUNT = std::numeric_limits<uint32_t>::max();
 class DependencyGraph {
     friend class RenderGraph;
@@ -76,5 +76,5 @@ private:
     DependencyGraph& operator=(const DependencyGraph& dependency) = delete;
     DependencyGraph& operator=(DependencyGraph&& dependency) = delete;
 };
-} // namespace Kosmos::Runtime::RenderGraph
+} // namespace Kosmos::Runtime::RDG
 #endif // DEPENDENCY_GRAPH_H

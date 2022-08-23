@@ -5,7 +5,7 @@
 #include <render/ResourceNode.h>
 #include <render/Resource.h>
 #include <render/RenderGraphHandle.h>
-namespace Kosmos::Runtime::RenderGraph {
+namespace Kosmos::Runtime::RDG {
 
 class RenderGraph {
     friend class DependencyGraph;
@@ -25,7 +25,8 @@ public:
 
 private:
     const ResourceSlot& getResourceSlot(RenderGraphHandle handle);
-    std::shared_ptr<ResourceNode> getInSlotResourceNode(RenderGraphHandle handle);
+    std::shared_ptr<ResourceNode> getResourceNode(RenderGraphHandle handle); // 获取的是cull之后的
+    std::shared_ptr<VirtualResource> getResource(RenderGraphHandle handle);
 };
-} // namespace Kosmos::Runtime::RenderGraph
+} // namespace Kosmos::Runtime::RDG
 #endif // RENDER_GRAPH_H

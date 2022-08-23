@@ -3,7 +3,7 @@
 #include <string>
 #include <memory>
 #include <render/vulkan/FrameBuffer.h>
-namespace Kosmos::Runtime {
+namespace Kosmos::Runtime::RDG {
 class PassNode;
 class VirtualResource {
 protected:
@@ -115,7 +115,7 @@ public:
         Resource<FrameBuffer>(name, description) {
         m_isDetached = true;
     }
-    RenderTarget(RenderTarget&& renderTarget)  noexcept:
+    RenderTarget(RenderTarget&& renderTarget) noexcept :
         Resource<FrameBuffer>(std::move(renderTarget)) {}
     ~RenderTarget() = default;
 
@@ -125,6 +125,6 @@ private:
     RenderTarget& operator=(RenderTarget&& resource) = delete;
 };
 
-} // namespace Kosmos::Runtime
+} // namespace Kosmos::Runtime::RDG
 
 #endif // RESOURCE_H

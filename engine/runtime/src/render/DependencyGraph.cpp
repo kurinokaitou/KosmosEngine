@@ -1,7 +1,7 @@
 #include <algorithm>
 #include <stack>
 #include <render/DependencyGraph.h>
-using namespace Kosmos::Runtime::RenderGraph;
+using namespace Kosmos::Runtime::RDG;
 DependencyGraph::DependencyGraph() {
     m_nodes.reserve(8);
     m_edges.reserve(16);

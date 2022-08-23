@@ -3,7 +3,7 @@
 #include "DependencyGraph.h"
 #include "RenderGraphHandle.h"
 #include <optional>
-namespace Kosmos::Runtime::RenderGraph {
+namespace Kosmos::Runtime::RDG {
 
 class RenderGraph;
 class ResourceNode : public DependencyGraph::Node, public std::enable_shared_from_this<ResourceNode> {
@@ -34,5 +34,5 @@ private:
     ResourceNode(const ResourceNode& node) = delete;
     ResourceNode& operator=(const ResourceNode& node) = delete;
 };
-} // namespace Kosmos::Runtime::RenderGraph
+} // namespace Kosmos::Runtime::RDG
 #endif // RESOURCE_NODE_H

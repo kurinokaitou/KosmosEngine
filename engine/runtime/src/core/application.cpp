@@ -7,7 +7,7 @@ Application* Application::s_application = nullptr;
 GlobalContext::GlobalContext(const std::string& configFileDir, const std::string& appName) {
     // TODO: config reader detect window type or api
     this->window = std::make_shared<GlfwWindow>(appName.c_str());
-    this->renderer = std::make_shared<Vulkan::VulkanRenderer>(this->window);
+    this->renderer = std::make_unique<Vulkan::VulkanRenderer>(this->window);
 }
 
 Application::Application(ApplicationCreateInfo& createInfo) :
