@@ -18,11 +18,10 @@ public:
     private:
         uint32_t m_refCount{0};
         NodeHandle m_index;
-        std::string m_name;
 
     public:
-        Node(DependencyGraph& graph, std::string& name) :
-            m_name(name), m_index(graph.newNodeHandle()) {
+        Node(DependencyGraph& graph) :
+            m_index(graph.newNodeHandle()) {
             graph.registerNode(std::shared_ptr<Node>(this));
         }
         virtual ~Node() = default;
@@ -45,7 +44,7 @@ public:
         const NodeHandle m_toNode;
 
     public:
-        Edge(DependencyGraph& graph, Node* from, Node* to) :
+        Edge(DependencyGraph& graph, std::shared_ptr<Node> from, std::shared_ptr<Node> to) :
             m_fromNode(from->getNodeHandle()), m_toNode(to->getNodeHandle()) {
             graph.registerEgde(std::shared_ptr<Edge>(this));
         }
@@ -65,6 +64,7 @@ public:
     std::vector<std::shared_ptr<Edge>> getNodeInwardEdges(const std::shared_ptr<Node> node);
     std::vector<std::shared_ptr<Edge>> getNodeOutwardEdges(const std::shared_ptr<Node> node);
     std::shared_ptr<Node> getNode(NodeHandle handle) { return m_nodes[handle]; };
+
 private:
     void registerNode(const std::shared_ptr<Node> node);
     void registerEgde(const std::shared_ptr<Edge> node);

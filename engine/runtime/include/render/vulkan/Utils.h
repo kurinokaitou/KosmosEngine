@@ -9,6 +9,7 @@
 #include <memory>
 #include <algorithm>
 #include <limits>
+#include <optional>
 #include <core/Log.h>
 #include "MakeInfo.h"
 
