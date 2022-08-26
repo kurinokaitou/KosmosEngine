@@ -19,11 +19,14 @@ private:
     std::vector<std::shared_ptr<VirtualResource>> m_resources;
 
 public:
+    RenderGraph() = default;
     DependencyGraph& getDepGraph() { return m_graph; }
     void compile();
     void execute();
 
 private:
+    RenderGraph(const RenderGraph& graph) = delete;
+    RenderGraph& operator=(const RenderGraph& graph) = delete;
     const ResourceSlot& getResourceSlot(RenderGraphHandle handle);
     std::shared_ptr<ResourceNode> getResourceNode(RenderGraphHandle handle); // 获取的是cull之后的
     std::shared_ptr<VirtualResource> getResource(RenderGraphHandle handle);

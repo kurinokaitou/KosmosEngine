@@ -40,11 +40,13 @@ Device::Device(VkInstance instance, VkSurfaceKHR surface, bool enabledDebugMarke
     vkGetDeviceQueue(m_device, static_cast<uint32_t>(m_queueFamilyIndices.presentFamily.value()), 0, &m_presentQueue);
     vkGetDeviceQueue(m_device, static_cast<uint32_t>(m_queueFamilyIndices.transferFamily.value()), 0, &m_transferQueue);
 }
+
 Device::Device(Device&& device) {
     m_device = std::exchange(device.m_device, nullptr);
     m_physicalDevice = std::exchange(device.m_physicalDevice, nullptr);
     m_surfaceRef = device.m_surfaceRef;
 }
+
 Device::~Device() {
     vmaDestroyAllocator(m_vmaAllocator);
     vkDestroyDevice(m_device, nullptr);
@@ -59,6 +61,7 @@ void Device::createSwapchain(const VkSwapchainCreateInfoKHR& createInfo, VkSwapc
     }
     m_debugMarkder->setDebugObjectName(&swapchain, VK_DEBUG_REPORT_OBJECT_TYPE_SWAPCHAIN_KHR_EXT, name);
 }
+
 void Device::createImageView(VkImage image, VkFormat format, VkImageAspectFlags aspectMask, uint32_t mipLevels, VkImageView* imageView, const std::string& name) const {
     auto createInfo = makeInfo<VkImageViewCreateInfo>();
     createInfo.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
@@ -83,12 +86,34 @@ void Device::createImageView(VkImage image, VkFormat format, VkImageAspectFlags 
     }
     m_debugMarkder->setDebugObjectName(&imageView, VK_DEBUG_REPORT_OBJECT_TYPE_IMAGE_VIEW_EXT, name);
 }
+
 void Device::createRenderPass(const VkRenderPassCreateInfo& createInfo, VkRenderPass* renderPass, const std::string& name) const {
+    if (vkCreateRenderPass(m_device, &createInfo, nullptr, renderPass) == VK_SUCCESS) {
+        KS_ENGINE_LOG_TRACE("Render pass create success.");
+    } else {
+        KS_ENGINE_LOG_ERROR("Failed to create render pass!");
+    }
+    m_debugMarkder->setDebugObjectName(&renderPass, VK_DEBUG_REPORT_OBJECT_TYPE_RENDER_PASS_EXT, name);
 }
-void Device::createGraphicsPipelineLayout(const VkPipelineLayoutCreateInfo& createInfo, VkPipelineLayout* layout, const std::string&) const {
+
+void Device::createGraphicsPipelineLayout(const VkPipelineLayoutCreateInfo& createInfo, VkPipelineLayout* layout, const std::string& name) const {
+    if (vkCreatePipelineLayout(m_device, &createInfo, nullptr, layout) == VK_SUCCESS) {
+        KS_ENGINE_LOG_TRACE("Graphics pipeline layout create success.");
+    } else {
+        KS_ENGINE_LOG_ERROR("Failed to create pipeline layout!");
+    }
+    m_debugMarkder->setDebugObjectName(&layout, VK_DEBUG_REPORT_OBJECT_TYPE_PIPELINE_LAYOUT_EXT, name);
 }
+
 void Device::createGraphicsPipeline(const VkGraphicsPipelineCreateInfo& createInfo, VkPipeline* pipeline, const std::string& name) const {
+    if (vkCreateGraphicsPipelines(m_device, nullptr, 1, &createInfo, nullptr, pipeline) == VK_SUCCESS) {
+        KS_ENGINE_LOG_TRACE("Graphics pipeline create success.");
+    } else {
+        KS_ENGINE_LOG_ERROR("Failed to create graphics pipeline!");
+    }
+    m_debugMarkder->setDebugObjectName(&pipeline, VK_DEBUG_REPORT_OBJECT_TYPE_PIPELINE_EXT, name);
 }
+
 void Device::createCommandPool(const VkCommandPoolCreateInfo& createInfo, VkCommandPool* commandPool, const std::string& name) const {
     if (vkCreateCommandPool(m_device, &createInfo, nullptr, commandPool) == VK_SUCCESS) {
         KS_ENGINE_LOG_TRACE("Command pool create success.");
@@ -97,33 +122,68 @@ void Device::createCommandPool(const VkCommandPoolCreateInfo& createInfo, VkComm
     }
     m_debugMarkder->setDebugObjectName(&commandPool, VK_DEBUG_REPORT_OBJECT_TYPE_COMMAND_POOL_EXT, name);
 }
-void Device::createCommandBuffer(const VkCommandBufferAllocateInfo& allocInfo, VkCommandBuffer* commandBuffer, const std::string& name) const {
-}
+
 void Device::createFrameBuffer(const VkFramebufferCreateInfo& createInfo, VkFramebuffer* frameBuffer, const std::string& name) const {
+    if (vkCreateFramebuffer(m_device, &createInfo, nullptr, frameBuffer) == VK_SUCCESS) {
+        KS_ENGINE_LOG_TRACE("Frame buffer create success.");
+    } else {
+        KS_ENGINE_LOG_ERROR("Failed to create frame buffer!");
+    }
+    m_debugMarkder->setDebugObjectName(&frameBuffer, VK_DEBUG_REPORT_OBJECT_TYPE_FRAMEBUFFER_EXT, name);
 }
+
 void Device::createDescriptorSetLayout(const VkDescriptorSetLayoutCreateInfo& createInfo, VkDescriptorSetLayout* descSetLayout, const std::string& name) const {
+    if (vkCreateDescriptorSetLayout(m_device, &createInfo, nullptr, descSetLayout) == VK_SUCCESS) {
+        KS_ENGINE_LOG_TRACE("DescriptorSetLayout create success.");
+    } else {
+        KS_ENGINE_LOG_FATAL("Failed to create descriptor set layout!");
+    }
+    m_debugMarkder->setDebugObjectName(&descSetLayout, VK_DEBUG_REPORT_OBJECT_TYPE_DESCRIPTOR_SET_LAYOUT_EXT, name);
 }
+
 void Device::createDescriptorPool(const VkDescriptorPoolCreateInfo& createInfo, VkDescriptorPool* descPool, const std::string& name) const {
+    if (vkCreateDescriptorPool(m_device, &createInfo, nullptr, descPool) == VK_SUCCESS) {
+        KS_ENGINE_LOG_TRACE("Descriptor pool create success.");
+    } else {
+        KS_ENGINE_LOG_FATAL("Failed to create descriptor set layout!");
+    }
+    m_debugMarkder->setDebugObjectName(&descPool, VK_DEBUG_REPORT_OBJECT_TYPE_DESCRIPTOR_POOL_EXT, name);
 }
+
 void Device::createSampler(const VkSamplerCreateInfo& createInfo, VkSampler* sampler, const std::string& name) const {
+    if (vkCreateSampler(m_device, &createInfo, nullptr, sampler) == VK_SUCCESS) {
+        KS_ENGINE_LOG_TRACE("Sampler create success.");
+    } else {
+        KS_ENGINE_LOG_ERROR("Failed to create sampler!");
+    }
+    m_debugMarkder->setDebugObjectName(&sampler, VK_DEBUG_REPORT_OBJECT_TYPE_SAMPLER_EXT, name);
 }
+
 void Device::createFence(const VkFenceCreateInfo& createInfo, VkFence* fence, const std::string& name) const {
     if (vkCreateFence(m_device, &createInfo, nullptr, fence) == VK_SUCCESS) {
         KS_ENGINE_LOG_TRACE("Fence create success.");
     } else {
-        KS_ENGINE_LOG_FATAL("Failed to create fence!");
+        KS_ENGINE_LOG_ERROR("Failed to create fence!");
     }
     m_debugMarkder->setDebugObjectName(&fence, VK_DEBUG_REPORT_OBJECT_TYPE_FENCE_EXT, name);
 }
+
 void Device::createSemahore(const VkSemaphoreCreateInfo& createInfo, VkSemaphore* semaphore, const std::string& name) const {
     if (vkCreateSemaphore(m_device, &createInfo, nullptr, semaphore) == VK_SUCCESS) {
         KS_ENGINE_LOG_TRACE("Semaphore create success.");
     } else {
-        KS_ENGINE_LOG_FATAL("Failed to create semaphore!");
+        KS_ENGINE_LOG_ERROR("Failed to create semaphore!");
     }
     m_debugMarkder->setDebugObjectName(&semaphore, VK_DEBUG_REPORT_OBJECT_TYPE_SEMAPHORE_EXT, name);
 }
+
 void Device::createShaderModule(const VkShaderModuleCreateInfo& createInfo, VkShaderModule* shaderModule, const std::string& name) const {
+    if (vkCreateShaderModule(m_device, &createInfo, nullptr, shaderModule) == VK_SUCCESS) {
+        KS_ENGINE_LOG_TRACE("Shader module create success.");
+    } else {
+        KS_ENGINE_LOG_ERROR("Failed to create shader module!");
+    }
+    m_debugMarkder->setDebugObjectName(&shaderModule, VK_DEBUG_REPORT_OBJECT_TYPE_SHADER_MODULE_EXT, name);
 }
 
 void Device::pickPhysicalDevice(VkInstance instance, uint32_t preferPhysicalDeviceIndex) {
