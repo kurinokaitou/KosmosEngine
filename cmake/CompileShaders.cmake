@@ -1,6 +1,6 @@
 function(compile_shader TARGET_NAME SHADERS SHADER_INCLUDE_DIR)
     set(working_dir "${CMAKE_CURRENT_SOURCE_DIR}")
-    set(GLSLANG_BIN $ENV{VULKAN_SDK}/Bin/glslangValidator.exe) # 设置glslangValidator的位置
+    set(GLSLANG_BIN  /usr/bin/glslangValidator) # 设置glslangValidator的位置
 
     foreach(SHADER ${SHADERS})  # 遍历每一个shader源文件
     get_filename_component(SHADER_NAME ${SHADER} NAME)  # 获取shader的名字

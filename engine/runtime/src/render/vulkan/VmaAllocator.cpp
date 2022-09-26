@@ -7,7 +7,7 @@
 #pragma clang diagnostic ignored "-Wnullability-completeness"
 #endif
 
-#include <vma/vk_mem_alloc.h>
+#include <vk_mem_alloc.h>
 
 #if defined(__clang__)
 #pragma clang diagnostic pop

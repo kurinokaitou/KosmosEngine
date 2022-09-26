@@ -1,20 +1,12 @@
 set(KOSMOS_ENGINE_NAME "KosmosEngine")
 
-# Vulkan SDK设置
-if(NOT DEFINED ENV{VULKAN_SDK})
-	message(FATAL_ERROR "VULKAN_SDK not defined!")
-endif()
-set(VULKAN_SDK $ENV{VULKAN_SDK})
-set(VK_SDK_INCLUDE ${VULKAN_SDK}/Include)
-set(VK_SDK_LIB ${VULKAN_SDK}/Lib/vulkan-1.lib)
-
-# vcpkg安装的glm和glfw3引入包
-find_package(glm CONFIG REQUIRED)
-find_package(glfw3 CONFIG REQUIRED)
-find_package(tinyobjloader CONFIG REQUIRED)
+find_package(Vulkan REQUIRED)
+find_package(glm  REQUIRED)
+find_package(glfw3  REQUIRED)
+find_package(tinyobjloader REQUIRED)
 # find_package(fmt CONFIG REQUIRED)
-# find_package(spdlog CONFIG REQUIRED)
-find_package(imgui CONFIG REQUIRED)
+find_package(spdlog CONFIG REQUIRED)
+# find_package(imgui CONFIG REQUIRED)
 # find_package(PThreads4W CONFIG REQUIRED)
 
 # 将源代码添加到此项目的可执行文件
@@ -26,13 +18,14 @@ source_group(TREE "${CMAKE_CURRENT_SOURCE_DIR}" FILES ${SOURCE_FILES})
 add_library(${KOSMOS_ENGINE_NAME} STATIC ${SOURCE_FILES} ${HEADER_FILES})
 
 # 链接到库文件
+target_link_libraries(${KOSMOS_ENGINE_NAME} PUBLIC Vulkan::Vulkan)
 target_link_libraries(${KOSMOS_ENGINE_NAME} PUBLIC glm::glm)
 # target_link_libraries(${KOSMOS_ENGINE_NAME} PUBLIC fmt::fmt)
 target_link_libraries(${KOSMOS_ENGINE_NAME} PUBLIC tinyobjloader::tinyobjloader)
-target_link_libraries(${KOSMOS_ENGINE_NAME} PUBLIC imgui::imgui)
-# target_link_libraries(${KOSMOS_ENGINE_NAME} PRIVATE spdlog::spdlog)
+# target_link_libraries(${KOSMOS_ENGINE_NAME} PUBLIC imgui::imgui)
+target_link_libraries(${KOSMOS_ENGINE_NAME} PRIVATE spdlog::spdlog)
 target_link_libraries(${KOSMOS_ENGINE_NAME} PUBLIC glfw)
-target_link_libraries(${KOSMOS_ENGINE_NAME} PUBLIC ${VK_SDK_LIB})
+
 # 添加预编译头
 target_compile_definitions(${KOSMOS_ENGINE_NAME} 
     PUBLIC
@@ -50,7 +43,6 @@ target_compile_definitions(${KOSMOS_ENGINE_NAME}
 # 添加包含目录
 target_include_directories(${KOSMOS_ENGINE_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 target_include_directories(${KOSMOS_ENGINE_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include/vendor)
-target_include_directories(${KOSMOS_ENGINE_NAME} PUBLIC ${VK_SDK_INCLUDE})
 
 
 # 编译着色器

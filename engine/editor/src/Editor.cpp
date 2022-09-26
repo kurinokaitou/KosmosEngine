@@ -1,4 +1,4 @@
-#include <editor.h>
+#include <Editor.h>
 #include <filesystem>
 Kosmos::Runtime::Application* createApplication(int argc, char** argv) {
     Kosmos::Runtime::ApplicationCreateInfo createInfo{};

@@ -1,8 +1,4 @@
 {
-    "cmake.configureSettings": {
-        "CMAKE_TOOLCHAIN_FILE": "D:\\vcpkg\\scripts\\buildsystems\\vcpkg.cmake",
-        "VCPKG_TARGET_TRIPLET": "x64-windows"
-    },
     "cmake.buildTask": true,
     "files.associations": {
         "__bit_reference": "cpp",

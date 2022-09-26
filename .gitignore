@@ -36,4 +36,5 @@ build
 dist
 generated
 resource
+.cache
 .vs
