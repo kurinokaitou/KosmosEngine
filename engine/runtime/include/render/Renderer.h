@@ -8,7 +8,7 @@ namespace Kosmos::Runtime {
 class Renderer {
 protected:
     std::shared_ptr<Window> m_window;
-    std::unique_ptr<RenderGraph::RenderGraph> m_renderGraph;
+    RDG::RenderGraph m_renderGraph;
 
 public:
     Renderer(std::shared_ptr<Window> window);
